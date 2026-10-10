@@ -1,0 +1,409 @@
+--- a/bin/plugin.js
++++ b/bin/plugin.js
+@@ -8295,8 +8295,183 @@
+     o = Math.abs((t ?? 0) - 1),
+     s = 244 * o,
+     a = n ? "#FFF" : "#222222";
+-  return Yu(`<svg transform="${i?"rotate(90 50 50) translate(0 -42)":""}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="144" height="144" viewBox="0 0 144 144">\n\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t<path id="path-3" d="M14,0 C21.7319865,0 28,6.2680135 28,14 L28,230 C28,237.731986 21.7319865,244 14,244 C6.2680135,244 0,237.731986 0,230 L0,14 C0,6.2680135 6.2680135,0 14,0 Z M14,6 C11.790861,6 9.790861,6.8954305 8.34314575,8.34314575 C6.8954305,9.790861 6,11.790861 6,14 L6,230 C6,232.209139 6.8954305,234.209139 8.34314575,235.656854 C9.790861,237.104569 11.790861,238 14,238 C16.209139,238 18.209139,237.104569 19.6568542,235.656854 C21.1045695,234.209139 22,232.209139 22,230 L22,14 C22,11.790861 21.1045695,9.790861 19.6568542,8.34314575 C18.209139,6.8954305 16.209139,6 14,6 Z"/>            \n\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t${`<g id="slider" transform="${e?"translate(0)":"translate(0,-144)"}">`}\n\t\t\t\t\t\t\t\t<polygon id="background" fill="${r}" fill-rule="nonzero" points="-72 72 216 72 216 216 -72 216" transform="rotate(-90 72 144)"/>\n\t\t\t\t\t\t\t\t<g id="back" transform="translate(58 22)">\n\t\t\t\t\t\t\t\t\t<use xlink:href="#path-3" id="slider" fill="${a}"/>\n\t\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t\t${`<rect id="bar" x="64" y="${29+s}" rx="8" width="16" height="${232-s}" fill="${n?"#FFF":"#454545"}"></rect>`}\n\t\t\t\t\t\t\t\t${void 0!==t?`<g transform="translate(0 ${232*o-44})">\n\t\t\t\t\t\t\t<circle id="cut" cx="72" cy="74" r="26" fill="${r}" mask="url(#mask-2)"/>\n\t\t\t\t\t\t\t<path id="ring" fill="${a}" d="M72,54 C83.045695,54 92,62.954305 92,74 C92,85.045695 83.045695,94 72,94 C60.954305,94 52,85.045695 52,74 C52,62.954305 60.954305,54 72,54 Z M72,60 C64.2680135,60 58,66.2680135 58,74 C58,81.7319865 64.2680135,88 72,88 C79.7319865,88 86,81.7319865 86,74 C86,66.2680135 79.7319865,60 72,60 Z"/>\n\t\t\t\t\t\t</g>`:""}\n\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t</svg>`)
++  return Yu(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="144" height="144" viewBox="0 0 144 144"><g transform="${i?"rotate(90 72 72)":""}">\n\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t<path id="path-3" d="M14,0 C21.7319865,0 28,6.2680135 28,14 L28,230 C28,237.731986 21.7319865,244 14,244 C6.2680135,244 0,237.731986 0,230 L0,14 C0,6.2680135 6.2680135,0 14,0 Z M14,6 C11.790861,6 9.790861,6.8954305 8.34314575,8.34314575 C6.8954305,9.790861 6,11.790861 6,14 L6,230 C6,232.209139 6.8954305,234.209139 8.34314575,235.656854 C9.790861,237.104569 11.790861,238 14,238 C16.209139,238 18.209139,237.104569 19.6568542,235.656854 C21.1045695,234.209139 22,232.209139 22,230 L22,14 C22,11.790861 21.1045695,9.790861 19.6568542,8.34314575 C18.209139,6.8954305 16.209139,6 14,6 Z"/>            \n\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t${`<g id="slider" transform="${e?"translate(0)":"translate(0,-144)"}">`}\n\t\t\t\t\t\t\t\t<polygon id="background" fill="${r}" fill-rule="nonzero" points="-72 72 216 72 216 216 -72 216" transform="rotate(-90 72 144)"/>\n\t\t\t\t\t\t\t\t<g id="back" transform="translate(58 22)">\n\t\t\t\t\t\t\t\t\t<use xlink:href="#path-3" id="slider" fill="${a}"/>\n\t\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t\t${`<rect id="bar" x="64" y="${29+s}" rx="8" width="16" height="${232-s}" fill="${n?"#FFF":"#454545"}"></rect>`}\n\t\t\t\t\t\t\t\t${void 0!==t?`<g transform="translate(0 ${232*o-44})">\n\t\t\t\t\t\t\t<circle id="cut" cx="72" cy="74" r="26" fill="${r}" mask="url(#mask-2)"/>\n\t\t\t\t\t\t\t<path id="ring" fill="${a}" d="M72,54 C83.045695,54 92,62.954305 92,74 C92,85.045695 83.045695,94 72,94 C60.954305,94 52,85.045695 52,74 C52,62.954305 60.954305,54 72,54 Z M72,60 C64.2680135,60 58,66.2680135 58,74 C58,81.7319865 64.2680135,88 72,88 C79.7319865,88 86,81.7319865 86,74 C86,66.2680135 79.7319865,60 72,60 Z"/>\n\t\t\t\t\t\t</g>`:""}\n\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t</g></svg>`)
+ }, Yu = e => `data:image/svg+xml;base64,${Buffer.from(e,"utf8").toString("base64")}`, qu = e => Yu(`<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<g clip-path="url(#clip0_573_5483)">\n\t\t\t\t\t\t\t\t<path d="M109 72L93 72" stroke="${e?Or.enabled:Or.disabled}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M62 44V72C62 75.3137 59.3137 78 56 78C52.6863 78 50 75.3137 50 72V44C50 40.6863 52.6863 38 56 38C59.3137 38 62 40.6863 62 44ZM44 44C44 37.3726 49.3726 32 56 32C62.6274 32 68 37.3726 68 44V72C68 78.6274 62.6274 84 56 84C49.3726 84 44 78.6274 44 72V44ZM38 72C38 70.3431 36.6569 69 35 69C33.3431 69 32 70.3431 32 72C32 78.3652 34.5286 84.4697 39.0294 88.9706C42.8173 92.7584 47.741 95.1494 53 95.8119V106H47C45.3431 106 44 107.343 44 109C44 110.657 45.3431 112 47 112H65C66.6569 112 68 110.657 68 109C68 107.343 66.6569 106 65 106H59V95.8119C64.259 95.1494 69.1827 92.7584 72.9706 88.9706C77.4714 84.4697 80 78.3652 80 72C80 70.3432 78.6569 69 77 69C75.3431 69 74 70.3431 74 72C74 76.7739 72.1036 81.3523 68.7279 84.7279C65.3523 88.1036 60.7739 90 56 90C51.2261 90 46.6477 88.1036 43.2721 84.7279C39.8964 81.3523 38 76.7739 38 72Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t\t<clipPath id="clip0_573_5483">\n\t\t\t\t\t\t\t\t\t<rect width="96" height="96" fill="${e?Or.enabled:Or.disabled}" transform="translate(24 24)"/>\n\t\t\t\t\t\t\t\t</clipPath>\n\t\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t</svg>\n\t`), ep = e => Yu(`<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<g clip-path="url(#clip0_573_5479)">\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M62 44V72C62 75.3137 59.3137 78 56 78C52.6863 78 50 75.3137 50 72V44C50 40.6863 52.6863 38 56 38C59.3137 38 62 40.6863 62 44ZM44 44C44 37.3726 49.3726 32 56 32C62.6274 32 68 37.3726 68 44V72C68 78.6274 62.6274 84 56 84C49.3726 84 44 78.6274 44 72V44ZM38 72C38 70.3431 36.6569 69 35 69C33.3431 69 32 70.3431 32 72C32 78.3652 34.5286 84.4697 39.0294 88.9706C42.8173 92.7584 47.741 95.1494 53 95.8119V106H47C45.3431 106 44 107.343 44 109C44 110.657 45.3431 112 47 112H65C66.6569 112 68 110.657 68 109C68 107.343 66.6569 106 65 106H59V95.8119C64.259 95.1494 69.1827 92.7584 72.9706 88.9706C77.4714 84.4697 80 78.3652 80 72C80 70.3432 78.6569 69 77 69C75.3431 69 74 70.3431 74 72C74 76.7739 72.1036 81.3523 68.7279 84.7279C65.3523 88.1036 60.7739 90 56 90C51.2261 90 46.6477 88.1036 43.2721 84.7279C39.8964 81.3523 38 76.7739 38 72Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path d="M109 72L93 72" stroke="${e?Or.enabled:Or.disabled}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>\n\t\t\t\t\t\t\t\t<path d="M101 64V80" stroke="${e?Or.enabled:Or.disabled}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>\n\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t\t<clipPath id="clip0_573_5479">\n\t\t\t\t\t\t\t\t\t<rect width="96" height="96" fill="${e?Or.enabled:Or.disabled}" transform="translate(24 24)"/>\n\t\t\t\t\t\t\t\t</clipPath>\n\t\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t</svg>`), tp = (e, t) => Yu(t ? `<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<g clip-path="url(#clip0_2_13)">\n\t\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M78 44V65.2721L84 71.2721V44C84 37.3726 78.6274 32 72 32C65.3726 32 60 37.3726 60 44V47.2721L66 53.2721V44C66 40.6863 68.6863 38 72 38C75.3137 38 78 40.6863 78 44ZM66 72V67.0601L60 61.1298V72C60 78.6274 65.3726 84 72 84C75.0855 84 77.899 82.8355 80.025 80.922L75.7429 76.6897C74.7168 77.5097 73.4157 78 72 78C68.6863 78 66 75.3137 66 72ZM72 90C76.5738 90 80.9682 88.2592 84.2972 85.1445L88.5671 89.3647C84.8362 92.9244 80.0742 95.1727 75 95.8119V106H81C82.6569 106 84 107.343 84 109C84 110.657 82.6569 112 81 112H63C61.3431 112 60 110.657 60 109C60 107.343 61.3431 106 63 106H69V95.8119C63.741 95.1494 58.8173 92.7584 55.0294 88.9706C50.5286 84.4697 48 78.3652 48 72C48 70.3431 49.3431 69 51 69C52.6569 69 54 70.3431 54 72C54 76.7739 55.8964 81.3523 59.2721 84.7279C62.6477 88.1036 67.2261 90 72 90ZM96 72C96 75.2503 95.3407 78.4327 94.0961 81.3682L89.3867 76.6588C89.7905 75.1521 90 73.5869 90 72C90 70.3431 91.3431 69 93 69C94.6569 69 96 70.3432 96 72Z" \n\t\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t\t<path d="M43 43L101 101" stroke="${e?Or.enabledAccent:Or.disabledAccent}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>\n\t\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t\t\t<clipPath id="clip0_2_13">\n\t\t\t\t\t\t\t\t\t\t<rect width="96" height="96" fill="${e?Or.enabled:Or.disabled}" transform="translate(24 24)"/>\n\t\t\t\t\t\t\t\t\t</clipPath>\n\t\t\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t\t</svg>\n\t\t\t\t` : `<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<g clip-path="url(#clip0_0_66)">\n\t\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M54 20V41.2721L60 47.2721V20C60 13.3726 54.6274 8 48 8C41.3726 8 36 13.3726 36 20V23.2721L42 29.2721V20C42 16.6863 44.6863 14 48 14C51.3137 14 54 16.6863 54 20ZM42 48V43.0601L36 37.1298V48C36 54.6274 41.3726 60 48 60C51.0855 60 53.899 58.8355 56.025 56.922L51.7429 52.6897C50.7168 53.5097 49.4157 54 48 54C44.6863 54 42 51.3137 42 48ZM48 66C52.5738 66 56.9682 64.2592 60.2972 61.1445L64.5671 65.3647C60.8362 68.9244 56.0742 71.1727 51 71.8119V82H57C58.6569 82 60 83.3431 60 85C60 86.6569 58.6569 88 57 88H39C37.3431 88 36 86.6569 36 85C36 83.3431 37.3431 82 39 82H45V71.8119C39.741 71.1494 34.8173 68.7584 31.0294 64.9706C26.5286 60.4697 24 54.3652 24 48C24 46.3431 25.3431 45 27 45C28.6569 45 30 46.3431 30 48C30 52.7739 31.8964 57.3523 35.2721 60.7279C38.6477 64.1036 43.2261 66 48 66ZM72 48C72 51.2503 71.3407 54.4327 70.0961 57.3682L65.3867 52.6588C65.7905 51.1521 66 49.5869 66 48C66 46.3431 67.3431 45 69 45C70.6569 45 72 46.3432 72 48Z" \n\t\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t\t<path d="M19 19L77 77" stroke="${e?Or.enabledAccent:Or.disabledAccent}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>\n\t\t\t\t\t\t\t\t</g>\n\t\t\t\t\t\t\t\t<defs>\n\t\t\t\t\t\t\t\t\t<clipPath id="clip0_0_66">\n\t\t\t\t\t\t\t\t\t\t<rect width="96" height="96" fill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t\t</clipPath>\n\t\t\t\t\t\t\t\t</defs>\n\t\t\t\t\t\t\t</svg>\n\t\t\t\t`), ip = (e, t) => Yu(t ? `<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M78 44V72C78 75.3137 75.3137 78 72 78C68.6863 78 66 75.3137 66 72V44C66 40.6863 68.6863 38 72 38C75.3137 38 78 40.6863 78 44ZM60 44C60 37.3726 65.3726 32 72 32C78.6274 32 84 37.3726 84 44V72C84 78.6274 78.6274 84 72 84C65.3726 84 60 78.6274 60 72V44ZM54 72C54 70.3431 52.6569 69 51 69C49.3431 69 48 70.3431 48 72C48 78.3652 50.5286 84.4697 55.0294 88.9706C58.8173 92.7584 63.741 95.1494 69 95.8119V106H63C61.3431 106 60 107.343 60 109C60 110.657 61.3431 112 63 112H81C82.6569 112 84 110.657 84 109C84 107.343 82.6569 106 81 106H75V95.8119C80.259 95.1494 85.1827 92.7584 88.9706 88.9706C93.4714 84.4697 96 78.3652 96 72C96 70.3432 94.6569 69 93 69C91.3431 69 90 70.3431 90 72C90 76.7739 88.1036 81.3523 84.7279 84.7279C81.3523 88.1036 76.7739 90 72 90C67.2261 90 62.6477 88.1036 59.2721 84.7279C55.8964 81.3523 54 76.7739 54 72Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t</svg>\n\t\t\t\t\t\t\t` : `\n\t\t<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M54 20V48C54 51.3137 51.3137 54 48 54C44.6863 54 42 51.3137 42 48V20C42 16.6863 44.6863 14 48 14C51.3137 14 54 16.6863 54 20ZM36 20C36 13.3726 41.3726 8 48 8C54.6274 8 60 13.3726 60 20V48C60 54.6274 54.6274 60 48 60C41.3726 60 36 54.6274 36 48V20ZM30 48C30 46.3431 28.6569 45 27 45C25.3431 45 24 46.3431 24 48C24 54.3652 26.5286 60.4697 31.0294 64.9706C34.8173 68.7584 39.741 71.1494 45 71.8119V82H39C37.3431 82 36 83.3431 36 85C36 86.6569 37.3431 88 39 88H57C58.6569 88 60 86.6569 60 85C60 83.3431 58.6569 82 57 82H51V71.8119C56.259 71.1494 61.1827 68.7584 64.9706 64.9706C69.4714 60.4697 72 54.3652 72 48C72 46.3432 70.6569 45 69 45C67.3431 45 66 46.3431 66 48C66 52.7739 64.1036 57.3523 60.7279 60.7279C57.3523 64.1036 52.7739 66 48 66C43.2261 66 38.6477 64.1036 35.2721 60.7279C31.8964 57.3523 30 52.7739 30 48Z" \n\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t</svg>`), np = e => Yu(`<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M78 44V72C78 72.5895 77.915 73.1591 77.7566 73.6973C79.6407 72.1879 81.7396 70.9353 84 69.9927V44C84 37.3726 78.6274 32 72 32C65.3726 32 60 37.3726 60 44V72C60 77.9664 64.3543 82.9158 70.0584 83.8437C70.9932 81.6428 72.2227 79.5973 73.6973 77.7566C73.1591 77.915 72.5895 78 72 78C68.6863 78 66 75.3137 66 72V44C66 40.6863 68.6863 38 72 38C75.3137 38 78 40.6863 78 44ZM59.2721 84.7279C61.7779 87.2337 64.9465 88.9244 68.3658 89.6294C68.1252 91.0504 68 92.5106 68 94C68 94.5621 68.0178 95.1201 68.053 95.6733C63.1516 94.8561 58.589 92.5302 55.0294 88.9706C50.5286 84.4697 48 78.3652 48 72C48 70.3431 49.3431 69 51 69C52.6569 69 54 70.3431 54 72C54 76.7739 55.8964 81.3523 59.2721 84.7279ZM75.2383 112C72.3502 108.99 70.1792 105.288 69 101.166V106H63C61.3431 106 60 107.343 60 109C60 110.657 61.3431 112 63 112H75.2383ZM116 94C116 106.15 106.15 116 94 116C81.8497 116 72 106.15 72 94C72 81.8497 81.8497 72 94 72C106.15 72 116 81.8497 116 94ZM85 86C85 84.3431 86.3431 83 88 83H102C103.657 83 105 84.3431 105 86V100C105 101.657 103.657 103 102 103C100.343 103 99 101.657 99 100V93.2426L88.1213 104.121C86.9497 105.293 85.0503 105.293 83.8787 104.121C82.7071 102.95 82.7071 101.05 83.8787 99.8787L94.7574 89H88C86.3431 89 85 87.6569 85 86Z" \n\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t</svg>`), rp = e => Yu(`<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M26.1213 41.0543C25.5587 40.4917 24.7956 40.1756 24 40.1756H20C19.4477 40.1756 19 39.7279 19 39.1756V31.1756C19 30.6233 19.4477 30.1756 20 30.1756H24C24.7956 30.1756 25.5587 29.8595 26.1213 29.2969L31 24.4182V45.9329L26.1213 41.0543ZM30.5858 49.7614L24 43.1756H20C17.7909 43.1756 16 41.3847 16 39.1756V31.1756C16 28.9664 17.7909 27.1756 20 27.1756H24L30.5858 20.5898C31.8457 19.3299 34 20.2222 34 22.004V48.3472C34 50.129 31.8457 51.0213 30.5858 49.7614ZM54 36.6756C54.8284 36.6756 55.5 36.004 55.5 35.1756C55.5 34.3472 54.8284 33.6756 54 33.6756H42C41.1716 33.6756 40.5 34.3472 40.5 35.1756C40.5 36.004 41.1716 36.6756 42 36.6756H54Z"\n\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t</svg>`), op = e => Yu(`<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M24 40.1756C24.7956 40.1756 25.5587 40.4917 26.1213 41.0543L31 45.9329V24.4182L26.1213 29.2969C25.5587 29.8595 24.7956 30.1756 24 30.1756H20C19.4477 30.1756 19 30.6233 19 31.1756V39.1756C19 39.7279 19.4477 40.1756 20 40.1756H24ZM24 43.1756L30.5858 49.7614C31.8457 51.0213 34 50.129 34 48.3472V22.004C34 20.2222 31.8457 19.3299 30.5858 20.5898L24 27.1756H20C17.7909 27.1756 16 28.9664 16 31.1756V39.1756C16 41.3847 17.7909 43.1756 20 43.1756H24ZM48 42.6756C47.1716 42.6756 46.5 42.004 46.5 41.1756V36.6756H42C41.1716 36.6756 40.5 36.004 40.5 35.1756C40.5 34.3472 41.1716 33.6756 42 33.6756H46.5V29.1756C46.5 28.3472 47.1716 27.6756 48 27.6756C48.8284 27.6756 49.5 28.3472 49.5 29.1756V33.6756H54C54.8284 33.6756 55.5 34.3472 55.5 35.1756C55.5 36.004 54.8284 36.6756 54 36.6756H49.5V41.1756C49.5 42.004 48.8284 42.6756 48 42.6756Z"\n\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t</svg>`), sp = (e, t) => Yu(t ? `<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<path d="M99.1127 40.8875C97.9411 39.7159 96.0416 39.7159 94.8701 40.8875C93.6985 42.059 93.6985 43.9585 94.8701 45.1301C98.3987 48.6587 101.198 52.8478 103.107 57.4582C105.017 62.0686 106 67.0099 106 72.0002C106 76.9904 105.017 81.9318 103.107 86.5421C101.198 91.1525 98.3987 95.3416 94.8701 98.8702C93.6985 100.042 93.6985 101.941 94.8701 103.113C96.0416 104.284 97.9411 104.284 99.1127 103.113C103.198 99.0271 106.439 94.1766 108.651 88.8382C110.862 83.4999 112 77.7783 112 72.0002C112 66.222 110.862 60.5004 108.651 55.1621C106.439 49.8238 103.198 44.9732 99.1127 40.8875Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M61.1716 101.172L48 88.0002H40C35.5817 88.0002 32 84.4184 32 80.0002V64.0002C32 59.5819 35.5817 56.0002 40 56.0002H48L61.1716 42.8286C63.6914 40.3087 68 42.0934 68 45.657V98.3433C68 101.907 63.6914 103.692 61.1716 101.172ZM52.2426 83.7575C51.1174 82.6323 49.5913 82.0002 48 82.0002H40C38.8954 82.0002 38 81.1047 38 80.0002V64.0002C38 62.8956 38.8954 62.0002 40 62.0002H48C49.5913 62.0002 51.1174 61.368 52.2426 60.2428L62 50.4854V93.5149L52.2426 83.7575Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path d="M79.3137 60.6865C78.1421 59.5149 76.2426 59.5149 75.0711 60.6865C73.8995 61.858 73.8995 63.7575 75.0711 64.9291C75.9997 65.8577 76.7362 66.9601 77.2388 68.1733C77.7413 69.3866 78 70.6869 78 72.0002C78 73.3134 77.7413 74.6137 77.2388 75.827C76.7362 77.0403 75.9997 78.1427 75.0711 79.0712C73.8995 80.2428 73.8995 82.1423 75.0711 83.3139C76.2426 84.4855 78.1421 84.4855 79.3137 83.3139C80.7994 81.8281 81.978 80.0643 82.7821 78.1231C83.5861 76.1819 84 74.1013 84 72.0002C84 69.899 83.5861 67.8184 82.7821 65.8772C81.978 63.936 80.7994 62.1722 79.3137 60.6865Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path d="M84.9706 50.787C86.1421 49.6154 88.0416 49.6154 89.2132 50.787C91.999 53.5727 94.2087 56.8799 95.7164 60.5197C97.224 64.1594 98 68.0605 98 72.0002C98 75.9398 97.224 79.8409 95.7164 83.4807C94.2087 87.1204 91.999 90.4276 89.2132 93.2134C88.0416 94.3849 86.1421 94.3849 84.9706 93.2134C83.799 92.0418 83.799 90.1423 84.9706 88.9707C87.1992 86.7421 88.967 84.0964 90.1731 81.1846C91.3792 78.2728 92 75.1519 92 72.0002C92 68.8484 91.3792 65.7276 90.1731 62.8158C88.967 59.904 87.1992 57.2582 84.9706 55.0296C83.799 53.858 83.799 51.9585 84.9706 50.787Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t</svg>\n\t\t` : `<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<path d="M75.1127 16.8875C73.9411 15.7159 72.0416 15.7159 70.8701 16.8875C69.6985 18.059 69.6985 19.9585 70.8701 21.1301C74.3987 24.6587 77.1977 28.8478 79.1074 33.4582C81.0171 38.0686 82 43.0099 82 48.0002C82 52.9904 81.0171 57.9318 79.1074 62.5421C77.1977 67.1525 74.3987 71.3416 70.8701 74.8702C69.6985 76.0418 69.6985 77.9413 70.8701 79.1129C72.0416 80.2844 73.9411 80.2844 75.1127 79.1129C79.1985 75.0271 82.4395 70.1766 84.6507 64.8382C86.8619 59.4999 88 53.7783 88 48.0002C88 42.222 86.8619 36.5004 84.6507 31.1621C82.4395 25.8238 79.1985 20.9732 75.1127 16.8875Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M37.1716 77.1717L24 64.0002H16C11.5817 64.0002 8 60.4184 8 56.0002V40.0002C8 35.5819 11.5817 32.0002 16 32.0002H24L37.1716 18.8286C39.6914 16.3087 44 18.0934 44 21.657V74.3433C44 77.9069 39.6914 79.6916 37.1716 77.1717ZM28.2426 59.7575C27.1174 58.6323 25.5913 58.0002 24 58.0002H16C14.8954 58.0002 14 57.1047 14 56.0002V40.0002C14 38.8956 14.8954 38.0002 16 38.0002H24C25.5913 38.0002 27.1174 37.368 28.2426 36.2428L38 26.4854V69.5149L28.2426 59.7575Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path d="M55.3137 36.6865C54.1421 35.5149 52.2426 35.5149 51.0711 36.6865C49.8995 37.858 49.8995 39.7575 51.0711 40.9291C51.9997 41.8577 52.7362 42.9601 53.2388 44.1733C53.7413 45.3866 54 46.6869 54 48.0002C54 49.3134 53.7413 50.6137 53.2388 51.827C52.7362 53.0403 51.9997 54.1427 51.0711 55.0712C49.8995 56.2428 49.8995 58.1423 51.0711 59.3139C52.2426 60.4855 54.1421 60.4855 55.3137 59.3139C56.7994 57.8281 57.978 56.0643 58.7821 54.1231C59.5861 52.1819 60 50.1013 60 48.0002C60 45.899 59.5861 43.8184 58.7821 41.8772C57.978 39.936 56.7994 38.1722 55.3137 36.6865Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path d="M60.9706 26.787C62.1421 25.6154 64.0416 25.6154 65.2132 26.787C67.999 29.5727 70.2087 32.8799 71.7164 36.5197C73.224 40.1594 74 44.0605 74 48.0002C74 51.9398 73.224 55.8409 71.7164 59.4807C70.2087 63.1204 67.999 66.4276 65.2132 69.2134C64.0416 70.3849 62.1421 70.3849 60.9706 69.2134C59.799 68.0418 59.799 66.1423 60.9706 64.9707C63.1992 62.7421 64.967 60.0964 66.1731 57.1846C67.3792 54.2728 68 51.1519 68 48.0002C68 44.8484 67.3792 41.7276 66.1731 38.8158C64.967 35.904 63.1992 33.2582 60.9706 31.0296C59.799 29.858 59.799 27.9585 60.9706 26.787Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t</svg>\t\t\n\t\t`), ap = (e, t) => Yu(t ? `<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M48 82C49.5913 82 51.1174 82.6321 52.2426 83.7574L62 93.5147V50.4853L52.2426 60.2426C51.1174 61.3679 49.5913 62 48 62H40C38.8954 62 38 62.8954 38 64V80C38 81.1046 38.8954 82 40 82H48ZM48 88L61.1716 101.172C63.6914 103.691 68 101.907 68 98.3431V45.6569C68 42.0932 63.6914 40.3086 61.1716 42.8284L48 56H40C35.5817 56 32 59.5817 32 64V80C32 84.4183 35.5817 88 40 88H48Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M80.8787 82.8787C79.7071 84.0503 79.7071 85.9497 80.8787 87.1213C82.0503 88.2929 83.9497 88.2929 85.1213 87.1213L96 76.2426L106.879 87.1213C108.05 88.2929 109.95 88.2929 111.121 87.1213C112.293 85.9497 112.293 84.0503 111.121 82.8787L100.243 72L111.121 61.1213C112.293 59.9497 112.293 58.0503 111.121 56.8787C109.95 55.7071 108.05 55.7071 106.879 56.8787L96 67.7574L85.1213 56.8787C83.9497 55.7071 82.0503 55.7071 80.8787 56.8787C79.7071 58.0503 79.7071 59.9497 80.8787 61.1213L91.7574 72L80.8787 82.8787Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabledAccent:Or.disabledAccent}"/>\n\t\t\t\t\t\t\t</svg>\n\t\t` : `<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M24 58C25.5913 58 27.1174 58.6321 28.2426 59.7574L38 69.5147V26.4853L28.2426 36.2426C27.1174 37.3679 25.5913 38 24 38H16C14.8954 38 14 38.8954 14 40V56C14 57.1046 14.8954 58 16 58H24ZM24 64L37.1716 77.1716C39.6914 79.6914 44 77.9068 44 74.3431V21.6569C44 18.0932 39.6914 16.3086 37.1716 18.8284L24 32H16C11.5817 32 8 35.5817 8 40V56C8 60.4183 11.5817 64 16 64H24Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M56.8787 58.8787C55.7071 60.0503 55.7071 61.9497 56.8787 63.1213C58.0503 64.2929 59.9497 64.2929 61.1213 63.1213L72 52.2426L82.8787 63.1213C84.0503 64.2929 85.9497 64.2929 87.1213 63.1213C88.2929 61.9497 88.2929 60.0503 87.1213 58.8787L76.2426 48L87.1213 37.1213C88.2929 35.9497 88.2929 34.0503 87.1213 32.8787C85.9497 31.7071 84.0503 31.7071 82.8787 32.8787L72 43.7574L61.1213 32.8787C59.9497 31.7071 58.0503 31.7071 56.8787 32.8787C55.7071 34.0503 55.7071 35.9497 56.8787 37.1213L67.7574 48L56.8787 58.8787Z" \n\t\t\t\t\t\t\t\tfill="${e?Or.enabledAccent:Or.disabledAccent}"/>\n\t\t\t\t\t\t\t</svg>\n\t\t`), lp = e => Yu(`<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M94 116C106.15 116 116 106.15 116 94C116 81.8497 106.15 72 94 72C81.8497 72 72 81.8497 72 94C72 106.15 81.8497 116 94 116ZM88 83C86.3431 83 85 84.3431 85 86C85 87.6569 86.3431 89 88 89H94.7574L83.8787 99.8787C82.7071 101.05 82.7071 102.95 83.8787 104.121C85.0503 105.293 86.9497 105.293 88.1213 104.121L99 93.2426V100C99 101.657 100.343 103 102 103C103.657 103 105 101.657 105 100V86C105 84.3431 103.657 83 102 83H88Z" \n\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t\t<path fill-rule="evenodd" clip-rule="evenodd" d="M94.8701 40.8873C96.0416 39.7157 97.9411 39.7157 99.1127 40.8873C103.198 44.9731 106.439 49.8236 108.651 55.1619C110.862 60.5002 112 66.2218 112 72C112 73.0464 111.963 74.091 111.888 75.1318C110.134 73.4684 108.149 72.0469 105.985 70.9209C105.853 66.2985 104.879 61.7358 103.107 57.458C101.198 52.8476 98.3987 48.6586 94.8701 45.1299C93.6985 43.9584 93.6985 42.0589 94.8701 40.8873ZM97.7673 68.2709C97.4343 65.6126 96.746 63.0051 95.7164 60.5195C94.2087 56.8797 91.999 53.5725 89.2132 50.7868C88.0416 49.6152 86.1421 49.6152 84.9706 50.7868C83.799 51.9584 83.799 53.8578 84.9706 55.0294C87.1992 57.258 88.967 59.9038 90.1731 62.8156C90.8783 64.5181 91.3834 66.2921 91.6813 68.102C92.4452 68.0345 93.2186 68 94 68C95.2795 68 96.5373 68.0924 97.7673 68.2709ZM83.8799 70.0431C83.7038 68.6142 83.3353 67.2127 82.7821 65.877C81.978 63.9358 80.7994 62.172 79.3137 60.6863C78.1421 59.5147 76.2426 59.5147 75.0711 60.6863C73.8995 61.8578 73.8995 63.7573 75.0711 64.9289C75.9997 65.8575 76.7362 66.9599 77.2388 68.1731C77.7413 69.3864 78 70.6868 78 72C78 72.5395 77.9563 73.0769 77.87 73.6069C79.6913 72.1644 81.7104 70.9607 83.8799 70.0431ZM68 94V45.6568C68 42.0932 63.6914 40.3085 61.1716 42.8284L48 56H40C35.5817 56 32 59.5817 32 64V80C32 84.4183 35.5817 88 40 88H48L61.1716 101.172C63.6914 103.691 68 101.907 68 98.3431V94ZM48 82C49.5913 82 51.1174 82.6321 52.2426 83.7573L62 93.5147V50.4853L52.2426 60.2426C51.1174 61.3678 49.5913 62 48 62H40C38.8954 62 38 62.8954 38 64V80C38 81.1046 38.8954 82 40 82H48Z" \n\t\t\t\t\t\t\tfill="${e?Or.enabled:Or.disabled}"/>\n\t\t\t\t\t\t</svg>`);
++// --- Volume Controller NEO: manual-key graphics, "Duotone Essentials" style ----------
++// Flat full-bleed tile, two tones of one hue, no black/white/gradients (matches the icon pack).
++const neoThemes = {
++  blue: { bg: "#3b4c66", sec: "#4c70a3", pri: "#67a4ff" },
++  purple: { bg: "#4e3d66", sec: "#774ea3", pri: "#b367ff" },
++  orange: { bg: "#6a5542", sec: "#a67b50", pri: "#ffb367" },
++  red: { bg: "#623d46", sec: "#a14e5d", pri: "#ff6783" }
++};
++const neoTheme = app => app?.mute ? neoThemes.red : neoThemes.blue;
++const neoEsc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
++const neoFont = 'font-family="Segoe UI, Arial, sans-serif" font-weight="700"';
++// app icon in the theme's two tones, or a duotone speaker while it is not ready / missing
++function neoIconSvg(app, th, x, y, s) {
++  const u = neoDuoIcon(app, th);
++  if (u) return `<image x="${x}" y="${y}" width="${s}" height="${s}" xlink:href="${u}" href="${u}"/>`;
++  const k = s / 100;
++  return `<g transform="translate(${x} ${y}) scale(${k})"><path d="M18 38 h16 l22 -18 v60 l-22 -18 h-16 a6 6 0 0 1 -6 -6 v-12 a6 6 0 0 1 6 -6 z" fill="${th.pri}"/>` +
++    `<path d="M66 36 a20 20 0 0 1 0 28 M76 26 a34 34 0 0 1 0 48" fill="none" stroke="${th.sec}" stroke-width="8" stroke-linecap="round"/></g>`;
++}
++const neoSlash = (th, cx, cy, r) => `<path d="M${cx - r} ${cy - r} L${cx + r} ${cy + r}" stroke="${th.bg}" stroke-width="16" stroke-linecap="round"/><path d="M${cx - r} ${cy - r} L${cx + r} ${cy + r}" stroke="${th.pri}" stroke-width="8" stroke-linecap="round"/>`;
++const neoBadge = (th, x, y, txt) => `<g transform="translate(${x} ${y})"><circle r="16" fill="${th.pri}"/><text y="${String(txt).length > 2 ? 5 : 6}" text-anchor="middle" ${neoFont} font-size="${String(txt).length > 2 ? 13 : 16}" fill="${th.bg}">${txt}</text></g>`;
++// "100%" is too wide next to the fader, so full volume reads "MAX"
++const neoPct = (th, x, y, size, pct) => pct >= 100 ? `<text x="${x}" y="${y}" text-anchor="middle" ${neoFont} font-size="${Math.round(size * .8)}" fill="${th.pri}">MAX</text>` : `<text x="${x}" y="${y}" text-anchor="middle" ${neoFont} font-size="${size}" fill="${th.pri}">${pct}<tspan font-size="${Math.round(size * .55)}" fill="${th.pri}" dx="1">%</tspan></text>`;
++const neoSvg = (th, body) => Yu(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="144" height="144" viewBox="0 0 144 144"><rect width="144" height="144" fill="${th.bg}"/>${body}</svg>`);
++// Approximate rendered width of bold Segoe UI text (em per char) so long names are cut to fit, with "…".
++// (deliberately generous: the Stream Deck renderer draws this font wider than a browser does)
++const neoTextW = (s, size) => [...s].reduce((w, c) => w + size * (/[iljtfrI1.,:;'|!\s]/.test(c) ? .34 : /[mwMW]/.test(c) ? .95 : /[A-Z0-9]/.test(c) ? .74 : .64), 0);
++const neoName = (app, maxW = 124, size = 17) => {
++  let n = String(app?.displayName || "");
++  if (neoTextW(n, size) > maxW) {
++    while (n.length > 1 && neoTextW(n + "…", size) > maxW) n = n.slice(0, -1);
++    n = n.trimEnd() + "…"
++  }
++  return neoEsc(n)
++};
++
++// Single key: Adjust (step) or Set (target)
++function neoGauge(app, active, { step = 0, target } = {}) {
++  const th = neoTheme(app), vol = Math.min(1, Math.max(0, app.volume ?? 0)),
++    live = active && (app.canActivelyAdjustVolume?.() ?? true), set = target !== undefined,
++    TOP = 16, H = 112, X = 16, W = 16, fh = Math.round(H * vol), ky = TOP + H - fh,
++    reached = set && Math.abs(Math.round(100 * vol) - target) <= 1,
++    tgtY = set ? TOP + H - Math.round(H * Math.min(1, Math.max(0, target / 100))) : 0,
++    badge = set ? (reached ? "✓" : "SET") : (step > 0 ? "+" : "−") + Math.abs(step),
++    label = app.mute ? `<text x="88" y="128" text-anchor="middle" ${neoFont} font-size="26" fill="${th.pri}">MUTE</text>` : neoPct(th, 88, 128, 36, set ? target : Math.round(100 * vol));
++  return neoSvg(th, `<g opacity="${live ? 1 : .45}">
++<rect x="${X}" y="${TOP}" width="${W}" height="${H}" rx="8" fill="${th.sec}"/>
++${fh > 0 ? `<rect x="${X}" y="${ky}" width="${W}" height="${fh}" rx="8" fill="${th.pri}"/>` : ""}
++${set ? `<rect x="${X - 6}" y="${tgtY - 2}" width="${W + 12}" height="4" rx="2" fill="${th.pri}"/>` : ""}
++<circle cx="${X + W / 2}" cy="${Math.min(TOP + H - 8, Math.max(TOP + 8, ky))}" r="12" fill="${th.pri}" stroke="${th.bg}" stroke-width="4"/>
++${neoIconSvg(app, th, 51, 14, 74)}${app.mute ? neoSlash(th, 88, 51, 28) : ""}${label}</g>${set ? neoBadge(th, 124, 18, badge) : ""}`);
++}
++
++// One tile of a two-key widget. geo: { orient: "v"|"h", plusFirst, isPlus, stepPlus, stepMinus }
++// The pair is drawn on a 144x288 (v) or 288x144 (h) canvas; each key shows its own 144x144 window.
++function neoPair(app, active, { orient, plusFirst, isPlus, stepPlus, stepMinus }) {
++  const th = neoTheme(app), v = orient === "v", vol = Math.min(1, Math.max(0, app.volume ?? 0)),
++    live = active && (app.canActivelyAdjustVolume?.() ?? true),
++    off = 144 * (isPlus === plusFirst ? 0 : 1),
++    A = 18, B = 270, hi = plusFirst ? A : B, lo = plusFirst ? B : A,
++    k = Math.round(lo + (hi - lo) * vol), f0 = Math.min(lo, k), f1 = Math.max(lo, k),
++    track = v ? `<rect x="16" y="${A}" width="16" height="${B - A}" rx="8" fill="${th.sec}"/>${vol > 0 ? `<rect x="16" y="${f0}" width="16" height="${f1 - f0}" rx="8" fill="${th.pri}"/>` : ""}`
++              : `<rect x="${A}" y="112" width="${B - A}" height="16" rx="8" fill="${th.sec}"/>${vol > 0 ? `<rect x="${f0}" y="112" width="${f1 - f0}" height="16" rx="8" fill="${th.pri}"/>` : ""}`,
++    knob = `<circle cx="${v ? 24 : k}" cy="${v ? k : 120}" r="13" fill="${th.pri}" stroke="${th.bg}" stroke-width="4"/>`,
++    // centred in the free area right of the vertical fader (x 32..144), equal side margins
++    ic = v ? { x: 49, y: 30, s: 78 } : { x: 30, y: 10, s: 86 },
++    tx = v ? 88 : 216, ty = v ? 144 + 76 : 70,
++    label = app.mute ? `<text x="${tx}" y="${ty}" text-anchor="middle" ${neoFont} font-size="30" fill="${th.pri}">MUTE</text>` : neoPct(th, tx, ty, 44, Math.round(100 * vol)),
++    name = neoName(app, v ? 84 : 112, 17), sub = name ? `<text x="${tx}" y="${ty + (v ? 26 : 28)}" text-anchor="middle" ${neoFont} font-size="17" fill="${th.pri}">${name}</text>` : "",
++    plusT = plusFirst ? 0 : 1,
++    bpos = t => v ? [124, t === 0 ? 18 : 270] : [t === 0 ? 20 : 268, 18];
++  return neoSvg(th, `<g transform="translate(${v ? 0 : -off} ${v ? -off : 0})">
++<g opacity="${live ? 1 : .45}">${track}${knob}${neoIconSvg(app, th, ic.x, ic.y, ic.s)}${app.mute ? neoSlash(th, ic.x + ic.s / 2, ic.y + ic.s / 2, 32) : ""}${label}${sub}</g>
++</g>`);
++}
++
++// Mute key: big icon + name, red when muted
++function neoMuteKey(app, active) {
++  const th = neoTheme(app), live = active && !(app.isInactiveLong?.() ?? false), name = neoName(app, 112, 18);
++  return neoSvg(th, `<g opacity="${live ? 1 : .45}">${neoIconSvg(app, th, 27, 10, 90)}${app.mute ? neoSlash(th, 72, 55, 34) : ""}
++<text x="72" y="128" text-anchor="middle" ${neoFont} font-size="${app.mute ? 22 : 18}" fill="${th.pri}">${app.mute ? "MUTED" : name}</text></g>`);
++}
++
++// App icons recoloured into the theme's two tones (sharp, async). Until the icon is ready
++// (or when the app only has the generic placeholder) the key shows a duotone speaker.
++const neoIconCache = new Map(), neoIconPending = new Set();
++let neoGenericIcon;
++function neoDuoIcon(app, th) {
++  const src = app?.iconData;
++  if (neoGenericIcon === undefined) neoGenericIcon = sp(!0, !1);
++  if (!src || typeof src !== "string" || !src.startsWith("data:image") || src === neoGenericIcon) return null;
++  const key = th.pri + "|" + (app.executableFile || app.displayName) + "|" + src.length;
++  if (neoIconCache.has(key)) return neoIconCache.get(key);
++  if (!neoIconPending.has(key)) {
++    neoIconPending.add(key);
++    neoMakeDuoIcon(src, th).then(u => neoIconCache.set(key, u)).catch(e => {
++      neoIconCache.set(key, null), Ir.logger.warn(`Duotone icon failed: ${e?.message ?? e}`)
++    }).finally(() => {
++      neoIconPending.delete(key), neoRedrawAllManual()
++    })
++  }
++  return null
++}
++async function neoMakeDuoIcon(src, th) {
++  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), S = hex(th.sec), P = hex(th.pri),
++    { data: d, info: o } = await Zu(Buffer.from(src.slice(src.indexOf(",") + 1), "base64"))
++      .resize(144, 144, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
++      .ensureAlpha().raw().toBuffer({ resolveWithObject: !0 }),
++    L = i => (.299 * d[i] + .587 * d[i + 1] + .114 * d[i + 2]) / 255;
++  let lo = 1, hi = 0;
++  for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 128) { const l = L(i); lo = Math.min(lo, l), hi = Math.max(hi, l) }
++  const span = Math.max(.05, hi - lo), lum = i => (L(i) - lo) / span, hist = new Array(64).fill(0);
++  let n = 0;
++  for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 128) hist[Math.min(63, Math.floor(64 * lum(i)))]++, n++;
++  // Otsu: split the icon into its two best-separated luminance groups -> dark tone / bright tone
++  let best = 0, cut = .5, w0 = 0, s0 = 0;
++  const tot = hist.reduce((a, c, k) => a + c * k, 0);
++  for (let k = 0; k < 63; k++) {
++    w0 += hist[k], s0 += hist[k] * k;
++    const w1 = n - w0;
++    if (!w0 || !w1) continue;
++    const v = w0 * w1 * (s0 / w0 - (tot - s0) / w1) ** 2;
++    v > best && (best = v, cut = (k + 1) / 64)
++  }
++  for (let i = 0; i < d.length; i += 4) {
++    const t = Math.min(1, Math.max(0, (lum(i) - cut) / .08 + .5));
++    for (let k = 0; k < 3; k++) d[i + k] = Math.round(S[k] + (P[k] - S[k]) * t)
++  }
++  return "data:image/png;base64," + (await Zu(d, { raw: { width: o.width, height: o.height, channels: 4 } }).png().toBuffer()).toString("base64")
++}
++// Find an adjacent manual Adjust key for the same app with the opposite sign on the same deck.
++// If there is one, both keys draw halves of one shared widget; otherwise draw the single-key gauge.
++function neoAdjustImage(e, t, i, n) {
++  const r = gp.manualContexts.get(e), o = Ir.actions.find(t => t.id === e), a = o?.device?.id,
++    l = r?.settings?.application?.executableFile;
++  let c;
++  if (r?.coordinates && l) for (const h of gp.manualContexts.values()) {
++    if (h.context === e || !h.coordinates || h.settings?.volumeChange !== Rr.adjust || h.settings?.application?.executableFile !== l) continue;
++    const d = parseInt(h.settings.volumeStep ?? "");
++    if (!(d > 0 || d < 0) || d > 0 == n > 0) continue;
++    if (Ir.actions.find(t => t.id === h.context)?.device?.id !== a) continue;
++    const u = h.coordinates.column - r.coordinates.column, p = h.coordinates.row - r.coordinates.row;
++    if (Math.abs(u) + Math.abs(p) !== 1) continue;
++    const f = n > 0, g = f ? r.coordinates : h.coordinates, m = f ? h.coordinates : r.coordinates;
++    c = {
++      orient: u === 0 ? "v" : "h",
++      plusFirst: u === 0 ? g.row < m.row : g.column < m.column,
++      isPlus: f,
++      stepPlus: Math.abs(f ? n : d),
++      stepMinus: Math.abs(f ? d : n)
++    };
++    break
++  }
++  o?.setTitle(""), o?.setImage(c ? neoPair(t, i, c) : neoGauge(t, i, { step: n }))
++}
++// Pairing depends on which keys exist, so redraw every manual key when one appears, disappears or changes.
++function neoRedrawAllManual() {
++  for (const e of gp.manualContexts.values()) {
++    const t = e?.settings?.application, i = t?.executableFile && fp.isConnected ? fp.getAppByExecutableFile(t.executableFile) : void 0;
++    // app not running: draw from the saved settings (dimmed) so a pair never ends up half single, half pair
++    i ? bp(e, i) : t?.executableFile && bp(e, cp.fromJson(t), !1)
++  }
++}
++function neoManualDraw(e, t, i, n = !0) {
++  const r = i?.volumeChange;
++  if (r === Rr.mute) {
++    const a = Ir.actions.find(t => t.id === e);
++    return a?.setTitle(""), void a?.setImage(neoMuteKey(t, n))
++  }
++  if (r === Rr.set) return yp(e, t, parseInt(i.volume ?? "0"), n);
++  if (r === Rr.adjust) {
++    const o = parseInt(i.volumeStep ?? ""), a = Ir.actions.find(t => t.id === e);
++    (o > 0 || o < 0) && neoAdjustImage(e, t, n, o)
++  }
++}
+ class cp {
+   activity;
+   displayName;
+@@ -8909,6 +9084,9 @@
+         case In.Galleon100SD:
+           Ir.profiles.switchToProfile(n, "Volume Controller Galleon (Auto)");
+           break;
++        case In.StreamDeckNeo:
++          Ir.profiles.switchToProfile(n, "Volume Controller Neo (Auto)");
++          break;
+         default:
+           Ir.actions.find(e => e.id === t)?.showAlert()
+       }
+@@ -8919,13 +9097,17 @@
+ ! function(e) {
+   e.Keypad = "Keypad", e.Encoder = "Encoder"
+ }(Ap || (Ap = {}));
++// Neo (4x2, no dials): apps are laid out per row, so the app slot is the row.
++const Nf = (c, d) => gp.deckDevices.get(d)?.type === In.StreamDeckNeo ? { column: c.row } : c;
+ const vp = (e, t, i, n = !0) => {
+     if (!e && !t) return;
+     const r = Ir.actions.find(t => t.id === e),
+       o = Ir.actions.find(e => e.id === t),
+       s = n && (i?.canActivelyAdjustVolume() ?? !1),
+-      a = i ? Xu(!0, i.volume, !1, s) : kr.blank,
+-      l = i ? Xu(!1, i.volume, !1, s) : kr.blank;
++      // Neo: Vol-/Vol+ sit side by side, so draw the fader horizontally (low left, high right)
++      h = gp.deckDevices.get((r ?? o)?.device?.id)?.type === In.StreamDeckNeo,
++      a = i ? Xu(!0, i.volume, h, s) : kr.blank,
++      l = i ? Xu(!1, i.volume, h, s) : kr.blank;
+     r?.setTitle(""), r?.setImage(a), o?.setTitle(""), o?.setImage(l)
+   },
+   bp = (e, t, i = !0) => {
+@@ -8945,15 +9127,15 @@
+         } = o;
+         if (e === Rr.adjust) {
+           const e = parseInt(n ?? "");
+-          e > 0 ? vp(r, "", t, i) : e < 0 ? vp("", r, t, i) : (!i || t.isInactiveLong() || t.isInactiveShort() ? s?.setImage(t.iconDataUnavailable) : s?.setImage(t.iconData), s?.setTitle(""))
+-        } else e === Rr.mute ? wp(r, t, i) : e === Rr.set && yp(r, t, parseInt(o.volume ?? "0"), i)
++          e > 0 || e < 0 ? neoAdjustImage(r, t, i, e) : (!i || t.isInactiveLong() || t.isInactiveShort() ? s?.setImage(t.iconDataUnavailable) : s?.setImage(t.iconData), s?.setTitle(""))
++        } else e === Rr.mute ? (s?.setTitle(""), s?.setImage(neoMuteKey(t, i))) : e === Rr.set && yp(r, t, parseInt(o.volume ?? "0"), i)
+     }
+   },
+   yp = (e, t, i, n = !0) => {
+     if (!e) return;
+     const r = Ir.actions.find(t => t.id === e),
+       o = cp.fromJson(t);
+-    !n || o.isInactiveLong() || o.isInactiveShort() ? r?.setImage(o.iconDataUnavailable) : r?.setImage(o.iconData), r?.setTitle(`${i}%`)
++    r?.setTitle(""), r?.setImage(neoGauge(o, n, { target: i }))
+   },
+   wp = (e, t, i = !0) => {
+     if (!e) return;
+@@ -9116,7 +9298,7 @@
+   },
+   Rp = (e, t, i) => {
+     if (!e) return;
+-    const n = t > i.columnCount && t - i.currentOffset - i.columnCount > 0 ? kr.right : kr.blank;
++    const n = t > i.columnCount && (i.type === In.StreamDeckNeo || t - i.currentOffset - i.columnCount > 0) ? kr.right : kr.blank;
+     Ir.actions.find(t => t.id === e)?.setImage(n)
+   };
+ let kp = (() => {
+@@ -9157,7 +9339,7 @@
+           coordinates: o
+         } = i, {
+           column: s
+-        } = o, a = gp.deckDevices.get(n);
++        } = Nf(o, e.action.device.id), a = gp.deckDevices.get(n);
+         if (!a || void 0 === a.autoColumns || void 0 === a.startColumnOffset) return;
+         const l = a.getAutoColumn(s, Ap.Keypad),
+           c = a.getAppIndexFromColumn(s, Ap.Keypad);
+@@ -9179,7 +9361,7 @@
+           coordinates: r
+         } = t, {
+           column: o
+-        } = r, s = gp.deckDevices.get(n)?.getAppIndexFromColumn(o, Ap.Keypad);
++        } = Nf(r, e.action.device.id), s = gp.deckDevices.get(n)?.getAppIndexFromColumn(o, Ap.Keypad);
+         if (void 0 === s) return i.showAlert(), void Ir.logger.error("Unexpected error: Stream Deck device not registered in plugin.");
+         const a = gp.globalSettingsCache,
+           l = a && "active" == a[n]?.showApps,
+@@ -9455,7 +9637,7 @@
+           coordinates: s
+         } = t, {
+           column: a
+-        } = s, l = gp.deckDevices.get(o);
++        } = Nf(s, e.action.device.id), l = gp.deckDevices.get(o);
+         if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
+         const c = l.getAutoColumn(a, Ap.Keypad),
+           h = l.getAppIndexFromColumn(a, Ap.Keypad);
+@@ -9480,7 +9662,7 @@
+           coordinates: r
+         } = i, {
+           column: o
+-        } = r, {
++        } = Nf(r, e.action.device.id), {
+           id: s
+         } = t;
+         this.keyDownMap.set(s, !0), this.decrementVolume(s, n, o)
+@@ -9553,7 +9735,7 @@
+           coordinates: s
+         } = t, {
+           column: a
+-        } = s, l = gp.deckDevices.get(o);
++        } = Nf(s, e.action.device.id), l = gp.deckDevices.get(o);
+         if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
+         const c = l.getAutoColumn(a, Ap.Keypad),
+           h = l.getAppIndexFromColumn(a, Ap.Keypad),
+@@ -9575,7 +9757,7 @@
+           coordinates: n
+         } = i, {
+           column: r
+-        } = n, {
++        } = Nf(n, e.action.device.id), {
+           id: o,
+           device: s
+         } = t, {
+@@ -9642,7 +9824,7 @@
+         } = e, {
+           id: i
+         } = t.device, n = gp.deckDevices.get(i);
+-        n?.enableBackToProfile && (t.setImage(kr.blank), (e => {
++        (t.setImage(kr.blank), n && (e => {
+           e.autoColumns.forEach(e => {
+             if (e.muteKey && Ir.actions.find(t => t.id === e.muteKey)?.setImage(), e.volumeUpKey && Ir.actions.find(t => t.id === e.volumeUpKey)?.setImage(), e.volumeDownKey && Ir.actions.find(t => t.id === e.volumeDownKey)?.setImage(), e.volumeDial) {
+               const t = Ir.actions.find(t => t.id === e.volumeDial);
+@@ -9666,7 +9848,10 @@
+         } = e, {
+           id: i
+         } = t.device;
+-        gp.deckDevices.get(i)?.enableBackToProfile ? t.setImage(kr.back) : t.setImage(kr.blank)
++        // This key only lives on the auto profiles, so seeing it means we're in auto mode.
++        // Don't rely on the in-memory flag: it is lost whenever the plugin restarts.
++        const n = gp.deckDevices.get(i);
++        n && (n.enableBackToProfile = !0), t.setImage(kr.back)
+       }
+       onWillDisappear(e) {
+         const {
+@@ -10108,6 +10293,8 @@
+         return 3;
+       case In.StreamDeckPlusXL:
+         return 6;
++      case In.StreamDeckNeo:
++        return 2;
+       default:
+         return 0
+     }
+@@ -10128,16 +10315,17 @@
+       Sp(e.executableFile).filter(({
+         settings: e,
+         controller: t
+-      }) => e?.volumeChange === Rr.mute || t === Ap.Encoder).forEach(({
++      }) => e?.volumeChange != null || t === Ap.Encoder).forEach(({
+         context: i,
+-        controller: n
++        controller: n,
++        settings: s
+       }) => {
+         switch (n) {
+           case Ap.Encoder:
+             Ep(i, e, t);
+             break;
+           case Ap.Keypad:
+-            wp(i, e, t)
++            neoManualDraw(i, e, s, t)
+         }
+       })
+     })(e, t)
+@@ -10147,7 +10335,7 @@
+       t.filter(({
+         settings: e,
+         controller: t
+-      }) => e?.volumeChange === Rr.adjust || t === Ap.Encoder).forEach(({
++      }) => e?.volumeChange === Rr.adjust || e?.volumeChange === Rr.set || t === Ap.Encoder).forEach(({
+         context: t,
+         controller: n,
+         settings: r
+@@ -10157,10 +10345,7 @@
+             Ip(t, e, i);
+             break;
+           case Ap.Keypad:
+-            if (r.volumeChange === Rr.adjust) {
+-              const n = parseInt(r.volumeStep ?? "0");
+-              n > 0 ? vp(t, "", e, i) : n < 0 && vp("", t, e, i)
+-            }
++            neoManualDraw(t, e, r, i)
+         }
+       })
+     })(e, Sp(e.executableFile), t)
+@@ -10187,7 +10372,7 @@
+     return void 0 === n ? void 0 : this.currentOffset + n
+   }
+   nextPage(e) {
+-    e.length > this.nextOffset && (this.currentOffset = this.nextOffset, xp(e, this))
++    e.length > this.nextOffset ? (this.currentOffset = this.nextOffset, xp(e, this)) : this.type === In.StreamDeckNeo && this.currentOffset > 0 && (this.currentOffset = 0, xp(e, this))
+   }
+   previousPage(e) {
+     this.currentOffset > 0 && (this.currentOffset = this.previousOffset, xp(e, this))
+@@ -10265,7 +10450,8 @@
+         h = c?.executableFile;
+       if (!h) return Ir.logger.error("Unable to identify application executable file."), void t.showAlert();
+       const d = fp.getAppByExecutableFile(h);
+-      d && fp.isConnected ? _p(n, d) : o?.application?.iconDataUnavailable ? _p(n, cp.fromJson(o.application), !1) : (t.setImage(), t.setTitle(""))
++      d && fp.isConnected ? _p(n, d) : o?.application?.iconDataUnavailable ? _p(n, cp.fromJson(o.application), !1) : (t.setImage(), t.setTitle(""));
++      neoRedrawAllManual()
+     }
+     onWillDisappear(e) {
+       const {
+@@ -10273,7 +10459,7 @@
+       } = e, {
+         id: i
+       } = t;
+-      this.keyDownContexts.delete(i), gp.manualContexts.delete(i)
++      this.keyDownContexts.delete(i), gp.manualContexts.delete(i), neoRedrawAllManual()
+     }
+     onDialRotate(e) {
+       if (!fp.isConnected) return e.action.showAlert(), void Ir.logger.error("Audio Router is not running!");
+@@ -10371,7 +10557,8 @@
+         coordinates: s,
+         settings: o,
+         controller: l
+-      }), h ? _p(r, h, !0) : a && _p(r, cp.fromJson(a), !1))
++      }), h ? _p(r, h, !0) : a && _p(r, cp.fromJson(a), !1));
++      neoRedrawAllManual()
+     }
+     onKeyDown(e) {
+       const {

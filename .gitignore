@@ -1,0 +1,3 @@
+# build output (contains Elgato code - never commit)
+out/
+__pycache__/

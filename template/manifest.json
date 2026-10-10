@@ -1,0 +1,276 @@
+{
+	"Name": "Volume Controller NEO",
+	"Version": "2.0.4.208",
+	"Author": "xenside",
+	"Description": "Elgato's Volume Controller with Stream Deck Neo support and redesigned keys, built locally from your own copy of the official plugin. Uses Elgato's Audio Router (ws://127.0.0.1:1844), installed with the official Volume Controller.",
+	"Category": "Volume Controller NEO",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://www.elgato.com",
+	"SDKVersion": 2,
+	"CodePath": "bin/plugin.js",
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "disabled"
+	},
+	"Software": {
+		"MinimumVersion": "6.5"
+	},
+	"OS": [
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"UUID": "com.xenside.volumecontroller",
+	"ApplicationsToMonitor": {
+		"windows": [
+			"ElgatoAudioControlServer.exe"
+		]
+	},
+	"Actions": [
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection",
+			"Name": "Auto Software Detection",
+			"Tooltip": "Automatically configure audio control for open applications.",
+			"Icon": "imgs/actions/auto-detection/action",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-detection/key"
+				}
+			],
+			"PropertyInspectorPath": "pi/application/auto-detection/inspector.html",
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.manual-detection",
+			"Name": "Manual Software Detection",
+			"Tooltip": "Manually configure audio control for open applications.",
+			"Icon": "imgs/actions/manual-detection/action",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/manual-detection/key"
+				}
+			],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Rotate": "Adjust",
+					"Push": "Mute/unmute"
+				}
+			},
+			"PropertyInspectorPath": "pi/application/manual-detection/inspector.html"
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.output-device-control",
+			"Name": "Output Device Control",
+			"Tooltip": "Configure audio control for connected output devices.",
+			"Icon": "imgs/actions/output-device-control/action",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/output-device-control/key"
+				}
+			],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Rotate": "Adjust",
+					"Push": "Mute/unmute"
+				}
+			},
+			"PropertyInspectorPath": "pi/device/output-device-control/inspector.html"
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.input-device-control",
+			"Name": "Input Device Control",
+			"Tooltip": "Configure audio control for connected input devices.",
+			"Icon": "imgs/actions/input-device-control/action",
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/input-device-control/key"
+				}
+			],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Rotate": "Adjust",
+					"Push": "Mute/unmute"
+				}
+			},
+			"PropertyInspectorPath": "pi/device/input-device-control/inspector.html"
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.back-to-profile",
+			"Name": "Back To Profile",
+			"Icon": "imgs/actions/auto-back-to-profile/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-back-to-profile/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.mute",
+			"Name": "Auto Mute",
+			"Icon": "imgs/actions/auto-mute/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-mute/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.volume-up",
+			"Name": "Auto Volume Up",
+			"Icon": "imgs/actions/auto-volume-up/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-volume-up/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.volume-down",
+			"Name": "Auto Volume Down",
+			"Icon": "imgs/actions/auto-volume-down/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-volume-down/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.next",
+			"Name": "Auto Next",
+			"Icon": "imgs/actions/auto-next/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-next/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.previous",
+			"Name": "Auto Previous",
+			"Icon": "imgs/actions/auto-previous/category",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-previous/action"
+				}
+			],
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.volume",
+			"Name": "Auto Volume",
+			"Icon": "imgs/actions/auto-volume/category",
+			"Controllers": [
+				"Encoder"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-volume/action"
+				}
+			],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Rotate": "Adjust",
+					"Push": "Mute/unmute"
+				}
+			},
+			"SupportedInMultiActions": false
+		},
+		{
+			"UUID": "com.xenside.volumecontroller.auto-detection.blank",
+			"Name": "Blank",
+			"Icon": "blank",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "blank"
+				}
+			],
+			"SupportedInMultiActions": false,
+			"VisibleInActionsList": false
+		}
+	],
+	"Profiles": [
+		{
+			"Name": "Volume Controller (Auto)",
+			"DeviceType": 0,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		},
+		{
+			"Name": "Volume Controller XL (Auto)",
+			"DeviceType": 2,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		},
+		{
+			"Name": "Volume Controller+ (Auto)",
+			"DeviceType": 7,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		},
+		{
+			"Name": "Volume Controller Neo (Auto)",
+			"DeviceType": 9,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		},
+		{
+			"Name": "Volume Controller Galleon (Auto)",
+			"DeviceType": 12,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		},
+		{
+			"Name": "Volume Controller + XL (Auto)",
+			"DeviceType": 13,
+			"Readonly": false,
+			"DontAutoSwitchWhenInstalled": true
+		}
+	]
+}
