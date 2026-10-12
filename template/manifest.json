@@ -1,6 +1,6 @@
 {
 	"Name": "Volume Controller NEO",
-	"Version": "2.0.4.208",
+	"Version": "2.0.4.209",
 	"Author": "xenside",
 	"Description": "Elgato's Volume Controller with Stream Deck Neo support and redesigned keys, built locally from your own copy of the official plugin. Uses Elgato's Audio Router (ws://127.0.0.1:1844), installed with the official Volume Controller.",
 	"Category": "Volume Controller NEO",

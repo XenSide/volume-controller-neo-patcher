@@ -1,6 +1,6 @@
 --- a/bin/plugin.js
 +++ b/bin/plugin.js
-@@ -8295,8 +8295,183 @@
+@@ -8295,8 +8295,184 @@
      o = Math.abs((t ?? 0) - 1),
      s = 244 * o,
      a = n ? "#FFF" : "#222222";
@@ -47,7 +47,7 @@
 +function neoGauge(app, active, { step = 0, target } = {}) {
 +  const th = neoTheme(app), vol = Math.min(1, Math.max(0, app.volume ?? 0)),
 +    live = active && (app.canActivelyAdjustVolume?.() ?? true), set = target !== undefined,
-+    TOP = 16, H = 112, X = 16, W = 16, fh = Math.round(H * vol), ky = TOP + H - fh,
++    TOP = 24, H = 104, X = 16, W = 16, fh = Math.round(H * vol), ky = TOP + H - fh,
 +    reached = set && Math.abs(Math.round(100 * vol) - target) <= 1,
 +    tgtY = set ? TOP + H - Math.round(H * Math.min(1, Math.max(0, target / 100))) : 0,
 +    badge = set ? (reached ? "✓" : "SET") : (step > 0 ? "+" : "−") + Math.abs(step),
@@ -66,7 +66,8 @@
 +  const th = neoTheme(app), v = orient === "v", vol = Math.min(1, Math.max(0, app.volume ?? 0)),
 +    live = active && (app.canActivelyAdjustVolume?.() ?? true),
 +    off = 144 * (isPlus === plusFirst ? 0 : 1),
-+    A = 18, B = 270, hi = plusFirst ? A : B, lo = plusFirst ? B : A,
++    // fader ends inset so the knob keeps a margin from the key edge at 0% / 100%
++    A = 32, B = 256, hi = plusFirst ? A : B, lo = plusFirst ? B : A,
 +    k = Math.round(lo + (hi - lo) * vol), f0 = Math.min(lo, k), f1 = Math.max(lo, k),
 +    track = v ? `<rect x="16" y="${A}" width="16" height="${B - A}" rx="8" fill="${th.sec}"/>${vol > 0 ? `<rect x="16" y="${f0}" width="16" height="${f1 - f0}" rx="8" fill="${th.pri}"/>` : ""}`
 +              : `<rect x="${A}" y="112" width="${B - A}" height="16" rx="8" fill="${th.sec}"/>${vol > 0 ? `<rect x="${f0}" y="112" width="${f1 - f0}" height="16" rx="8" fill="${th.pri}"/>` : ""}`,
@@ -185,7 +186,7 @@
  class cp {
    activity;
    displayName;
-@@ -8909,6 +9084,9 @@
+@@ -8909,6 +9085,9 @@
          case In.Galleon100SD:
            Ir.profiles.switchToProfile(n, "Volume Controller Galleon (Auto)");
            break;
@@ -195,7 +196,7 @@
          default:
            Ir.actions.find(e => e.id === t)?.showAlert()
        }
-@@ -8919,13 +9097,17 @@
+@@ -8919,13 +9098,17 @@
  ! function(e) {
    e.Keypad = "Keypad", e.Encoder = "Encoder"
  }(Ap || (Ap = {}));
@@ -215,7 +216,7 @@
      r?.setTitle(""), r?.setImage(a), o?.setTitle(""), o?.setImage(l)
    },
    bp = (e, t, i = !0) => {
-@@ -8945,15 +9127,15 @@
+@@ -8945,15 +9128,15 @@
          } = o;
          if (e === Rr.adjust) {
            const e = parseInt(n ?? "");
@@ -234,7 +235,7 @@
    },
    wp = (e, t, i = !0) => {
      if (!e) return;
-@@ -9116,7 +9298,7 @@
+@@ -9116,7 +9299,7 @@
    },
    Rp = (e, t, i) => {
      if (!e) return;
@@ -243,7 +244,7 @@
      Ir.actions.find(t => t.id === e)?.setImage(n)
    };
  let kp = (() => {
-@@ -9157,7 +9339,7 @@
+@@ -9157,7 +9340,7 @@
            coordinates: o
          } = i, {
            column: s
@@ -252,7 +253,7 @@
          if (!a || void 0 === a.autoColumns || void 0 === a.startColumnOffset) return;
          const l = a.getAutoColumn(s, Ap.Keypad),
            c = a.getAppIndexFromColumn(s, Ap.Keypad);
-@@ -9179,7 +9361,7 @@
+@@ -9179,7 +9362,7 @@
            coordinates: r
          } = t, {
            column: o
@@ -261,7 +262,7 @@
          if (void 0 === s) return i.showAlert(), void Ir.logger.error("Unexpected error: Stream Deck device not registered in plugin.");
          const a = gp.globalSettingsCache,
            l = a && "active" == a[n]?.showApps,
-@@ -9455,7 +9637,7 @@
+@@ -9455,7 +9638,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -270,7 +271,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad);
-@@ -9480,7 +9662,7 @@
+@@ -9480,7 +9663,7 @@
            coordinates: r
          } = i, {
            column: o
@@ -279,7 +280,7 @@
            id: s
          } = t;
          this.keyDownMap.set(s, !0), this.decrementVolume(s, n, o)
-@@ -9553,7 +9735,7 @@
+@@ -9553,7 +9736,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -288,7 +289,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad),
-@@ -9575,7 +9757,7 @@
+@@ -9575,7 +9758,7 @@
            coordinates: n
          } = i, {
            column: r
@@ -297,7 +298,7 @@
            id: o,
            device: s
          } = t, {
-@@ -9642,7 +9824,7 @@
+@@ -9642,7 +9825,7 @@
          } = e, {
            id: i
          } = t.device, n = gp.deckDevices.get(i);
@@ -306,7 +307,7 @@
            e.autoColumns.forEach(e => {
              if (e.muteKey && Ir.actions.find(t => t.id === e.muteKey)?.setImage(), e.volumeUpKey && Ir.actions.find(t => t.id === e.volumeUpKey)?.setImage(), e.volumeDownKey && Ir.actions.find(t => t.id === e.volumeDownKey)?.setImage(), e.volumeDial) {
                const t = Ir.actions.find(t => t.id === e.volumeDial);
-@@ -9666,7 +9848,10 @@
+@@ -9666,7 +9849,10 @@
          } = e, {
            id: i
          } = t.device;
@@ -318,7 +319,7 @@
        }
        onWillDisappear(e) {
          const {
-@@ -10108,6 +10293,8 @@
+@@ -10108,6 +10294,8 @@
          return 3;
        case In.StreamDeckPlusXL:
          return 6;
@@ -327,7 +328,7 @@
        default:
          return 0
      }
-@@ -10128,16 +10315,17 @@
+@@ -10128,16 +10316,17 @@
        Sp(e.executableFile).filter(({
          settings: e,
          controller: t
@@ -348,7 +349,7 @@
          }
        })
      })(e, t)
-@@ -10147,7 +10335,7 @@
+@@ -10147,7 +10336,7 @@
        t.filter(({
          settings: e,
          controller: t
@@ -357,7 +358,7 @@
          context: t,
          controller: n,
          settings: r
-@@ -10157,10 +10345,7 @@
+@@ -10157,10 +10346,7 @@
              Ip(t, e, i);
              break;
            case Ap.Keypad:
@@ -369,7 +370,7 @@
          }
        })
      })(e, Sp(e.executableFile), t)
-@@ -10187,7 +10372,7 @@
+@@ -10187,7 +10373,7 @@
      return void 0 === n ? void 0 : this.currentOffset + n
    }
    nextPage(e) {
@@ -378,7 +379,7 @@
    }
    previousPage(e) {
      this.currentOffset > 0 && (this.currentOffset = this.previousOffset, xp(e, this))
-@@ -10265,7 +10450,8 @@
+@@ -10265,7 +10451,8 @@
          h = c?.executableFile;
        if (!h) return Ir.logger.error("Unable to identify application executable file."), void t.showAlert();
        const d = fp.getAppByExecutableFile(h);
@@ -388,7 +389,7 @@
      }
      onWillDisappear(e) {
        const {
-@@ -10273,7 +10459,7 @@
+@@ -10273,7 +10460,7 @@
        } = e, {
          id: i
        } = t;
@@ -397,7 +398,7 @@
      }
      onDialRotate(e) {
        if (!fp.isConnected) return e.action.showAlert(), void Ir.logger.error("Audio Router is not running!");
-@@ -10371,7 +10557,8 @@
+@@ -10371,7 +10558,8 @@
          coordinates: s,
          settings: o,
          controller: l
