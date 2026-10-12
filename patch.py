@@ -5,8 +5,8 @@ Usage:  python patch.py [--source PATH] [--out DIR] [--volumeproxy EXE] [--insta
   --source       the official plugin folder (default: the one Stream Deck installed,
                  %APPDATA%\\Elgato\\StreamDeck\\Plugins\\com.elgato.volume-controller.sdPlugin)
   --out          where to write the patched plugin and the .streamDeckPlugin package (default: ./out)
-  --volumeproxy  VolumeProxy's Foreground.exe to bundle (default: %LOCALAPPDATA%\\VolumeProxy\\Foreground.exe
-                 if present); without it the plugin works, it just does not start the proxy itself
+  --volumeproxy  bundle this Foreground.exe instead of the VolumeProxy build in template/bin
+                 (e.g. one you compiled yourself from https://github.com/XenSide/VolumeProxy)
   --install      open the package with Stream Deck when done
 
 Needs Python 3.9+ and Node.js (for `npx js-beautify` and `npm install koffi`). Nothing from
@@ -128,7 +128,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--source", default=default_source())
     ap.add_argument("--out", default=os.path.join(HERE, "out"))
-    ap.add_argument("--volumeproxy", default=os.path.join(os.environ.get("LOCALAPPDATA", ""), "VolumeProxy", "Foreground.exe"))
+    ap.add_argument("--volumeproxy")
     ap.add_argument("--install", action="store_true")
     args = ap.parse_args()
 
@@ -181,18 +181,18 @@ def main():
     shutil.copytree(os.path.join(HERE, "template", "bin"), os.path.join(dst, "bin"), dirs_exist_ok=True)
     make_neo_profile(dst)
 
-    # 5. koffi (focused-app hook) and, if available, VolumeProxy
+    # 5. koffi (focused-app hook); VolumeProxy is bundled from template/bin unless overridden
     npm = subprocess.run(["npm", "install", "--prefix", os.path.join(dst, "bin"), "--no-save",
                           "--no-package-lock", "--no-audit", "--no-fund", KOFFI],
                          capture_output=True, text=True, shell=(os.name == "nt"))
     if npm.returncode != 0 or not os.path.isdir(os.path.join(dst, "bin", "node_modules", "koffi")):
         fail(f"npm install {KOFFI} failed\n" + npm.stderr)
     print("installed", KOFFI)
-    if os.path.isfile(args.volumeproxy):
+    if args.volumeproxy:
+        if not os.path.isfile(args.volumeproxy):
+            fail(f"--volumeproxy: {args.volumeproxy} not found")
         shutil.copyfile(args.volumeproxy, os.path.join(dst, "bin", "Foreground.exe"))
         print("bundled", args.volumeproxy)
-    else:
-        print("note: VolumeProxy not bundled (pass --volumeproxy); Foreground keys need it running")
 
     # 6. sanity check + package
     node = shutil.which("node")

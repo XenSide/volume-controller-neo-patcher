@@ -36,9 +36,10 @@ the Volume Controller you installed from the Elgato Marketplace.
 - **Volume Controller 2.0.4.196** installed from the Elgato Marketplace (it also
   installs the Audio Router, `ElgatoAudioControlServer.exe`, which this plugin uses)
 - Python 3.9+ and Node.js (for `npx js-beautify` and `npm install koffi`)
-- Optional: [VolumeProxy](https://github.com/XenSide/VolumeProxy)'s `Foreground.exe`
-  (picked up from `%LOCALAPPDATA%\VolumeProxy\` or passed with `--volumeproxy`).
-  Without it the plugin works, but does not start the proxy itself.
+
+[VolumeProxy](https://github.com/XenSide/VolumeProxy)'s `Foreground.exe` is included
+(`template/bin/`) and always bundled. To use your own build instead, pass
+`--volumeproxy path\to\Foreground.exe`.
 
 ## Build & install
 
@@ -65,7 +66,8 @@ through Stream Deck — that may also remove the Audio Router.
 3. Applies `patches/*.patch`.
 4. Adds a plain-text `manifest.json` and the plugin's own files (`template/`), and
    generates the Neo auto profile.
-5. Installs `koffi` (pinned) with npm and bundles VolumeProxy if available.
+5. Installs `koffi` (pinned) with npm. VolumeProxy comes from `template/bin` (or
+   `--volumeproxy`).
 6. Packs `out/com.xenside.volumecontroller.streamDeckPlugin`.
 
 If Elgato ships a new plugin version the patches may stop applying; the script
