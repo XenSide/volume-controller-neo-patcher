@@ -1,0 +1,26 @@
+--- a/pi/application/manual-detection/inspector.js
++++ b/pi/application/manual-detection/inspector.js
+@@ -34,7 +34,15 @@
+ 	settings = temp;
+ 
+ 	$PI.setSettings(settings);
++	setStyleVisibility();
+ });
++
++// xenside: Default / Duotone key style (keypad only); colour rows only for Duotone.
++function setStyleVisibility() {
++	const duo = controller !== 'Encoder' && document.getElementById('style').value === 'duotone';
++	document.getElementById('duo-item').style.display = duo ? 'flex' : 'none';
++	document.getElementById('duo-custom').style.display = duo && document.getElementById('duo-preset').value === 'custom' ? 'flex' : 'none';
++}
+ 
+ $PI.onConnected(async ({ actionInfo: { payload } }) => {
+ 	settings = payload?.settings;
+@@ -88,6 +96,7 @@
+ 	Utils.setFormValue(formValue, form);
+ 
+ 	setControlVisibility(connected);
++	setStyleVisibility();
+ });
+ 
+ function setVolumeControlItemVisibility(event, isEncoder = false) {

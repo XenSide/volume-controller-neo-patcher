@@ -14,9 +14,16 @@ the Volume Controller you installed from the Elgato Marketplace.
   auto layout puts one app per row — `[Back][Mute][Vol−][Vol+]` /
   `[Next][Mute][Vol−][Vol+]` — and *Next* wraps around. Vol−/Vol+ draw a
   horizontal fader across the two keys.
-- **Redesigned Manual Software Detection keys** in a flat two-tone style (inspired
-  by the *Duotone Essentials* icon pack): app icons are recoloured to match, keys
-  turn red when the app is muted, `100%` reads `MAX`, long names are cut to fit.
+- **Redesigned Manual Software Detection keys**, with a **Style** per key: *Default*
+  (stock Stream Deck look, original app icons) or *Duotone* (flat two-tone style of
+  the *Duotone Essentials* icon pack: blue / orange / purple / red presets or custom
+  colours, app icons recoloured to match). Keys turn red when the app is muted,
+  `100%` reads `MAX`, long names are cut to fit.
+- **[VolumeProxy](https://github.com/XenSide/VolumeProxy) integration:** bundles and
+  starts `Foreground.exe` (one copy only, run from `%LOCALAPPDATA%\VolumeProxy`),
+  always offers "Foreground" in the app picker, and keys set to it show the icon and
+  name of the focused app. Focus changes come from a Windows event hook in a worker
+  thread, so nothing is polled.
 - **Two-key widgets:** an adjacent Vol+ / Vol− pair for the same app is drawn as
   one control spanning both keys — vertical when stacked, horizontal side by side.
 - **Back To Profile** keeps working after a plugin restart.
@@ -28,7 +35,10 @@ the Volume Controller you installed from the Elgato Marketplace.
 - Windows, Stream Deck 6.5+
 - **Volume Controller 2.0.4.196** installed from the Elgato Marketplace (it also
   installs the Audio Router, `ElgatoAudioControlServer.exe`, which this plugin uses)
-- Python 3.9+ and Node.js (for `npx js-beautify`)
+- Python 3.9+ and Node.js (for `npx js-beautify` and `npm install koffi`)
+- Optional: [VolumeProxy](https://github.com/XenSide/VolumeProxy)'s `Foreground.exe`
+  (picked up from `%LOCALAPPDATA%\VolumeProxy\` or passed with `--volumeproxy`).
+  Without it the plugin works, but does not start the proxy itself.
 
 ## Build & install
 
@@ -53,8 +63,10 @@ through Stream Deck — that may also remove the Audio Router.
 2. Renames the plugin ID so it is a separate, non-Marketplace plugin (no
    integrity check).
 3. Applies `patches/*.patch`.
-4. Adds a plain-text `manifest.json` (`template/`) and generates the Neo auto profile.
-5. Packs `out/com.xenside.volumecontroller.streamDeckPlugin`.
+4. Adds a plain-text `manifest.json` and the plugin's own files (`template/`), and
+   generates the Neo auto profile.
+5. Installs `koffi` (pinned) with npm and bundles VolumeProxy if available.
+6. Packs `out/com.xenside.volumecontroller.streamDeckPlugin`.
 
 If Elgato ships a new plugin version the patches may stop applying; the script
 then tells you which hunk failed.

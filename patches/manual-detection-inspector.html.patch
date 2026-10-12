@@ -1,0 +1,33 @@
+--- a/pi/application/manual-detection/inspector.html
++++ b/pi/application/manual-detection/inspector.html
+@@ -93,6 +93,30 @@
+ 							<span id="max" class="clickable" value="100">100</span>
+ 						</div>
+ 					</div>
++					<div style="display: none" class="sdpi-item keypad" id="style-item">
++						<div class="sdpi-item-label">Style</div>
++						<select class="sdpi-item-value select" name="style" id="style">
++							<option value="default" selected>Default</option>
++							<option value="duotone">Duotone</option>
++						</select>
++					</div>
++					<div style="display: none" class="sdpi-item" id="duo-item">
++						<div class="sdpi-item-label">Colour</div>
++						<select class="sdpi-item-value select" name="duoPreset" id="duo-preset">
++							<option value="blue" selected>Blue</option>
++							<option value="orange">Orange</option>
++							<option value="purple">Purple</option>
++							<option value="red">Red</option>
++							<option value="custom">Custom…</option>
++						</select>
++					</div>
++					<div style="display: none" type="color" class="sdpi-item" id="duo-custom">
++						<div class="sdpi-item-label">Custom</div>
++						<div class="sdpi-item-value" style="display: flex; gap: 8px; align-items: center">
++							<input type="color" name="duoBg" id="duo-bg" value="#3b4c66" title="Background" />
++							<input type="color" name="duoAccent" id="duo-accent" value="#67a4ff" title="Accent" />
++						</div>
++					</div>
+ 				</form>
+ 			</div>
+ 		</div>

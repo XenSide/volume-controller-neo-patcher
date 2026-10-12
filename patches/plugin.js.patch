@@ -1,6 +1,6 @@
 --- a/bin/plugin.js
 +++ b/bin/plugin.js
-@@ -8295,8 +8295,184 @@
+@@ -8295,8 +8295,205 @@
      o = Math.abs((t ?? 0) - 1),
      s = 244 * o,
      a = n ? "#FFF" : "#222222";
@@ -15,7 +15,26 @@
 +  orange: { bg: "#6a5542", sec: "#a67b50", pri: "#ffb367" },
 +  red: { bg: "#623d46", sec: "#a14e5d", pri: "#ff6783" }
 +};
-+const neoTheme = app => app?.mute ? neoThemes.red : neoThemes.blue;
++// Per-key style (settings.style): "default" = stock Stream Deck look (black, white, original app
++// icons; red when muted), "duotone" = the pack colours above (duoPreset, or custom duoBg/duoAccent).
++const neoPlain = { bg: "#000000", sec: "#3a3a3a", pri: "#ffffff", plain: !0 },
++  neoPlainMuted = { bg: "#000000", sec: "#4a2228", pri: "#e5484d", plain: !0 };
++const neoHex = h => /^#[0-9a-f]{6}$/i.test(h || "");
++const neoMix = (a, b, t) => "#" + [1, 3, 5].map(i => { const x = parseInt(a.slice(i, i + 2), 16), y = parseInt(b.slice(i, i + 2), 16); return Math.round(x + (y - x) * t).toString(16).padStart(2, "0") }).join("");
++const neoTheme = (app, s) => {
++  if (s?.style !== "duotone") return app?.mute ? neoPlainMuted : neoPlain;
++  if (app?.mute) return neoThemes.red;
++  if (s.duoPreset === "custom" && neoHex(s.duoBg) && neoHex(s.duoAccent)) return { bg: s.duoBg, sec: neoMix(s.duoBg, s.duoAccent, .4), pri: s.duoAccent };
++  return neoThemes[s.duoPreset] || neoThemes.blue
++};
++// xenside: keys set to VolumeProxy ("Foreground") show the icon and name of the app it is
++// controlling: the last focused app that has an audio session (tracked at the end of the file).
++let neoFgApp = null;
++const neoIsProxy = a => /(^|[\\/])foreground\.exe$/i.test(a?.executableFile || "");
++function neoFg(app) {
++  if (!neoIsProxy(app) || !neoFgApp) return app;
++  return Object.assign(Object.create(Object.getPrototypeOf(app)), app, { iconData: neoFgApp.iconData, displayName: neoFgApp.displayName })
++}
 +const neoEsc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 +const neoFont = 'font-family="Segoe UI, Arial, sans-serif" font-weight="700"';
 +// app icon in the theme's two tones, or a duotone speaker while it is not ready / missing
@@ -44,8 +63,8 @@
 +};
 +
 +// Single key: Adjust (step) or Set (target)
-+function neoGauge(app, active, { step = 0, target } = {}) {
-+  const th = neoTheme(app), vol = Math.min(1, Math.max(0, app.volume ?? 0)),
++function neoGauge(app, active, { step = 0, target, s } = {}) {
++  const th = neoTheme(app, s), vol = Math.min(1, Math.max(0, app.volume ?? 0)),
 +    live = active && (app.canActivelyAdjustVolume?.() ?? true), set = target !== undefined,
 +    TOP = 24, H = 104, X = 16, W = 16, fh = Math.round(H * vol), ky = TOP + H - fh,
 +    reached = set && Math.abs(Math.round(100 * vol) - target) <= 1,
@@ -62,8 +81,8 @@
 +
 +// One tile of a two-key widget. geo: { orient: "v"|"h", plusFirst, isPlus, stepPlus, stepMinus }
 +// The pair is drawn on a 144x288 (v) or 288x144 (h) canvas; each key shows its own 144x144 window.
-+function neoPair(app, active, { orient, plusFirst, isPlus, stepPlus, stepMinus }) {
-+  const th = neoTheme(app), v = orient === "v", vol = Math.min(1, Math.max(0, app.volume ?? 0)),
++function neoPair(app, active, { orient, plusFirst, isPlus, stepPlus, stepMinus, s }) {
++  const th = neoTheme(app, s), v = orient === "v", vol = Math.min(1, Math.max(0, app.volume ?? 0)),
 +    live = active && (app.canActivelyAdjustVolume?.() ?? true),
 +    off = 144 * (isPlus === plusFirst ? 0 : 1),
 +    // fader ends inset so the knob keeps a margin from the key edge at 0% / 100%
@@ -85,8 +104,8 @@
 +}
 +
 +// Mute key: big icon + name, red when muted
-+function neoMuteKey(app, active) {
-+  const th = neoTheme(app), live = active && !(app.isInactiveLong?.() ?? false), name = neoName(app, 112, 18);
++function neoMuteKey(app, active, s) {
++  const th = neoTheme(app, s), live = active && !(app.isInactiveLong?.() ?? false), name = neoName(app, 112, 18);
 +  return neoSvg(th, `<g opacity="${live ? 1 : .45}">${neoIconSvg(app, th, 27, 10, 90)}${app.mute ? neoSlash(th, 72, 55, 34) : ""}
 +<text x="72" y="128" text-anchor="middle" ${neoFont} font-size="${app.mute ? 22 : 18}" fill="${th.pri}">${app.mute ? "MUTED" : name}</text></g>`);
 +}
@@ -99,6 +118,7 @@
 +  const src = app?.iconData;
 +  if (neoGenericIcon === undefined) neoGenericIcon = sp(!0, !1);
 +  if (!src || typeof src !== "string" || !src.startsWith("data:image") || src === neoGenericIcon) return null;
++  if (th.plain) return src; // Default style keeps the app's own icon
 +  const key = th.pri + "|" + (app.executableFile || app.displayName) + "|" + src.length;
 +  if (neoIconCache.has(key)) return neoIconCache.get(key);
 +  if (!neoIconPending.has(key)) {
@@ -161,7 +181,7 @@
 +    };
 +    break
 +  }
-+  o?.setTitle(""), o?.setImage(c ? neoPair(t, i, c) : neoGauge(t, i, { step: n }))
++  o?.setTitle(""), o?.setImage(c ? neoPair(t, i, { ...c, s: r?.settings }) : neoGauge(t, i, { step: n, s: r?.settings }))
 +}
 +// Pairing depends on which keys exist, so redraw every manual key when one appears, disappears or changes.
 +function neoRedrawAllManual() {
@@ -172,10 +192,11 @@
 +  }
 +}
 +function neoManualDraw(e, t, i, n = !0) {
++  t = neoFg(t);
 +  const r = i?.volumeChange;
 +  if (r === Rr.mute) {
 +    const a = Ir.actions.find(t => t.id === e);
-+    return a?.setTitle(""), void a?.setImage(neoMuteKey(t, n))
++    return a?.setTitle(""), void a?.setImage(neoMuteKey(t, n, i))
 +  }
 +  if (r === Rr.set) return yp(e, t, parseInt(i.volume ?? "0"), n);
 +  if (r === Rr.adjust) {
@@ -186,7 +207,7 @@
  class cp {
    activity;
    displayName;
-@@ -8909,6 +9085,9 @@
+@@ -8909,6 +9106,9 @@
          case In.Galleon100SD:
            Ir.profiles.switchToProfile(n, "Volume Controller Galleon (Auto)");
            break;
@@ -196,7 +217,7 @@
          default:
            Ir.actions.find(e => e.id === t)?.showAlert()
        }
-@@ -8919,13 +9098,17 @@
+@@ -8919,17 +9119,22 @@
  ! function(e) {
    e.Keypad = "Keypad", e.Encoder = "Encoder"
  }(Ap || (Ap = {}));
@@ -216,14 +237,19 @@
      r?.setTitle(""), r?.setImage(a), o?.setTitle(""), o?.setImage(l)
    },
    bp = (e, t, i = !0) => {
-@@ -8945,15 +9128,15 @@
+     if (!t) return;
++    t = neoFg(t);
+     const {
+       controller: n,
+       context: r,
+@@ -8945,15 +9150,15 @@
          } = o;
          if (e === Rr.adjust) {
            const e = parseInt(n ?? "");
 -          e > 0 ? vp(r, "", t, i) : e < 0 ? vp("", r, t, i) : (!i || t.isInactiveLong() || t.isInactiveShort() ? s?.setImage(t.iconDataUnavailable) : s?.setImage(t.iconData), s?.setTitle(""))
 -        } else e === Rr.mute ? wp(r, t, i) : e === Rr.set && yp(r, t, parseInt(o.volume ?? "0"), i)
 +          e > 0 || e < 0 ? neoAdjustImage(r, t, i, e) : (!i || t.isInactiveLong() || t.isInactiveShort() ? s?.setImage(t.iconDataUnavailable) : s?.setImage(t.iconData), s?.setTitle(""))
-+        } else e === Rr.mute ? (s?.setTitle(""), s?.setImage(neoMuteKey(t, i))) : e === Rr.set && yp(r, t, parseInt(o.volume ?? "0"), i)
++        } else e === Rr.mute ? (s?.setTitle(""), s?.setImage(neoMuteKey(t, i, o))) : e === Rr.set && yp(r, t, parseInt(o.volume ?? "0"), i)
      }
    },
    yp = (e, t, i, n = !0) => {
@@ -231,11 +257,11 @@
      const r = Ir.actions.find(t => t.id === e),
        o = cp.fromJson(t);
 -    !n || o.isInactiveLong() || o.isInactiveShort() ? r?.setImage(o.iconDataUnavailable) : r?.setImage(o.iconData), r?.setTitle(`${i}%`)
-+    r?.setTitle(""), r?.setImage(neoGauge(o, n, { target: i }))
++    r?.setTitle(""), r?.setImage(neoGauge(o, n, { target: i, s: gp.manualContexts.get(e)?.settings }))
    },
    wp = (e, t, i = !0) => {
      if (!e) return;
-@@ -9116,7 +9299,7 @@
+@@ -9116,7 +9321,7 @@
    },
    Rp = (e, t, i) => {
      if (!e) return;
@@ -244,7 +270,7 @@
      Ir.actions.find(t => t.id === e)?.setImage(n)
    };
  let kp = (() => {
-@@ -9157,7 +9340,7 @@
+@@ -9157,7 +9362,7 @@
            coordinates: o
          } = i, {
            column: s
@@ -253,7 +279,7 @@
          if (!a || void 0 === a.autoColumns || void 0 === a.startColumnOffset) return;
          const l = a.getAutoColumn(s, Ap.Keypad),
            c = a.getAppIndexFromColumn(s, Ap.Keypad);
-@@ -9179,7 +9362,7 @@
+@@ -9179,7 +9384,7 @@
            coordinates: r
          } = t, {
            column: o
@@ -262,7 +288,7 @@
          if (void 0 === s) return i.showAlert(), void Ir.logger.error("Unexpected error: Stream Deck device not registered in plugin.");
          const a = gp.globalSettingsCache,
            l = a && "active" == a[n]?.showApps,
-@@ -9455,7 +9638,7 @@
+@@ -9455,7 +9660,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -271,7 +297,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad);
-@@ -9480,7 +9663,7 @@
+@@ -9480,7 +9685,7 @@
            coordinates: r
          } = i, {
            column: o
@@ -280,7 +306,7 @@
            id: s
          } = t;
          this.keyDownMap.set(s, !0), this.decrementVolume(s, n, o)
-@@ -9553,7 +9736,7 @@
+@@ -9553,7 +9758,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -289,7 +315,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad),
-@@ -9575,7 +9758,7 @@
+@@ -9575,7 +9780,7 @@
            coordinates: n
          } = i, {
            column: r
@@ -298,7 +324,7 @@
            id: o,
            device: s
          } = t, {
-@@ -9642,7 +9825,7 @@
+@@ -9642,7 +9847,7 @@
          } = e, {
            id: i
          } = t.device, n = gp.deckDevices.get(i);
@@ -307,7 +333,7 @@
            e.autoColumns.forEach(e => {
              if (e.muteKey && Ir.actions.find(t => t.id === e.muteKey)?.setImage(), e.volumeUpKey && Ir.actions.find(t => t.id === e.volumeUpKey)?.setImage(), e.volumeDownKey && Ir.actions.find(t => t.id === e.volumeDownKey)?.setImage(), e.volumeDial) {
                const t = Ir.actions.find(t => t.id === e.volumeDial);
-@@ -9666,7 +9849,10 @@
+@@ -9666,7 +9871,10 @@
          } = e, {
            id: i
          } = t.device;
@@ -319,7 +345,7 @@
        }
        onWillDisappear(e) {
          const {
-@@ -10108,6 +10294,8 @@
+@@ -10108,6 +10316,8 @@
          return 3;
        case In.StreamDeckPlusXL:
          return 6;
@@ -328,7 +354,7 @@
        default:
          return 0
      }
-@@ -10128,16 +10316,17 @@
+@@ -10128,16 +10338,17 @@
        Sp(e.executableFile).filter(({
          settings: e,
          controller: t
@@ -349,7 +375,7 @@
          }
        })
      })(e, t)
-@@ -10147,7 +10336,7 @@
+@@ -10147,7 +10358,7 @@
        t.filter(({
          settings: e,
          controller: t
@@ -358,7 +384,7 @@
          context: t,
          controller: n,
          settings: r
-@@ -10157,10 +10346,7 @@
+@@ -10157,10 +10368,7 @@
              Ip(t, e, i);
              break;
            case Ap.Keypad:
@@ -370,7 +396,7 @@
          }
        })
      })(e, Sp(e.executableFile), t)
-@@ -10187,7 +10373,7 @@
+@@ -10187,7 +10395,7 @@
      return void 0 === n ? void 0 : this.currentOffset + n
    }
    nextPage(e) {
@@ -379,7 +405,7 @@
    }
    previousPage(e) {
      this.currentOffset > 0 && (this.currentOffset = this.previousOffset, xp(e, this))
-@@ -10265,7 +10451,8 @@
+@@ -10265,7 +10473,8 @@
          h = c?.executableFile;
        if (!h) return Ir.logger.error("Unable to identify application executable file."), void t.showAlert();
        const d = fp.getAppByExecutableFile(h);
@@ -389,7 +415,7 @@
      }
      onWillDisappear(e) {
        const {
-@@ -10273,7 +10460,7 @@
+@@ -10273,7 +10482,7 @@
        } = e, {
          id: i
        } = t;
@@ -398,7 +424,7 @@
      }
      onDialRotate(e) {
        if (!fp.isConnected) return e.action.showAlert(), void Ir.logger.error("Audio Router is not running!");
-@@ -10371,7 +10558,8 @@
+@@ -10371,7 +10580,8 @@
          coordinates: s,
          settings: o,
          controller: l
@@ -408,3 +434,86 @@
      }
      onKeyDown(e) {
        const {
+@@ -10499,10 +10709,15 @@
+     t.updateAppMute(e)
+   })
+ }
++// xenside: keep VolumeProxy pickable while its session is gone (focused window is silent).
++function withProxy(e) {
++  const p = require("path").join(process.env.LOCALAPPDATA || "", "VolumeProxy", "Foreground.exe");
++  return (e ?? []).some(a => /(^|[\\/])foreground\.exe$/i.test(a.executableFile || '')) ? e : [...(e ?? []), { displayName: 'Foreground', executableFile: p }];
++}
+ async function pf(e) {
+   const t = gp.globalSettingsCache;
+   Ir.ui.sendToPropertyInspector({
+-    apps: e,
++    apps: withProxy(e),
+     connected: fp.isConnected,
+     globalSettings: t
+   })
+@@ -10551,7 +10766,7 @@
+     case _r.manual:
+       const e = (fp.getAppsArray() ?? []).map(e => e.toJson());
+       Ir.ui.sendToPropertyInspector({
+-        apps: e,
++        apps: withProxy(e),
+         connected: fp.isConnected
+       });
+       break;
+@@ -10584,3 +10799,56 @@
+     void 0 !== e?.type && gp.deckDevices.set(e.id, new of(e.id, e.type))
+   }), Ir.settings.getGlobalSettings()
+ });
++// xenside: bundled VolumeProxy (Foreground.exe), always run from one fixed path so the
++// "Foreground" app keeps the same exe path whichever plugin starts it first. The exe holds
++// a named mutex, so only one copy runs (Foreground Boost bundles it too).
++(() => {
++  const fs = require("fs"), path = require("path"), { spawn } = require("child_process");
++  const dst = path.join(process.env.LOCALAPPDATA || "", "VolumeProxy", "Foreground.exe"), src = path.join(__dirname, "Foreground.exe");
++  try {
++    if (fs.existsSync(src) && (!fs.existsSync(dst) || fs.statSync(dst).size !== fs.statSync(src).size)) fs.mkdirSync(path.dirname(dst), { recursive: !0 }), fs.copyFileSync(src, dst)
++  } catch (e) { Ir.logger.warn(`VolumeProxy copy: ${e?.message ?? e}`) } // EBUSY: already running
++  // Not bundled (e.g. built without it) and never installed: the rest of the plugin works without it.
++  if (!fs.existsSync(dst)) return void Ir.logger.info("VolumeProxy not bundled; Foreground keys need it running");
++  try { spawn(dst, [], { detached: !0, stdio: "ignore" }).on("error", e => Ir.logger.warn(`VolumeProxy spawn: ${e?.message ?? e}`)).unref() } catch (e) { Ir.logger.warn(`VolumeProxy spawn: ${e?.message ?? e}`) }
++})();
++
++// xenside: track the focused app for "Foreground" keys, event-driven. bin/fgworker.js hooks
++// EVENT_SYSTEM_FOREGROUND and sleeps in a Windows message loop (no CPU while idle); here we
++// only map its PIDs to Audio Router apps. If the focused app has no audio session yet, we
++// retry when the Audio Router reports a new app.
++(() => {
++  let k;
++  try { k = require("koffi") } catch (e) { return void Ir.logger.warn(`Foreground icon disabled: ${e?.message ?? e}`) }
++  const path = require("path"), { Worker } = require("worker_threads"),
++    kr = k.load("kernel32.dll"),
++    OpenProcess = kr.func("void* __stdcall OpenProcess(uint32, bool, uint32)"),
++    CloseHandle = kr.func("bool __stdcall CloseHandle(void*)"),
++    QueryFullProcessImageNameW = kr.func("bool __stdcall QueryFullProcessImageNameW(void*, uint32, _Out_ uint16*, _Inout_ uint32*)"),
++    PostThreadMessageW = k.load("user32.dll").func("bool __stdcall PostThreadMessageW(uint32, uint32, uintptr, intptr)"),
++    base = p => String(p || "").replace(/\\/g, "/").split("/").pop().toLowerCase(),
++    exeOf = pid => {
++      const h = OpenProcess(4096, !1, pid); // PROCESS_QUERY_LIMITED_INFORMATION
++      if (!h) return "";
++      const b = new Uint16Array(1024), n = [b.length];
++      const ok = QueryFullProcessImageNameW(h, 0, b, n);
++      return CloseHandle(h), ok ? base(Buffer.from(b.buffer, 0, 2 * n[0]).toString("utf16le")) : ""
++    };
++  let focus = null, tid = 0;
++  const match = () => {
++    if (!focus || !fp.isConnected) return;
++    // browsers/Discord play audio from a child process: match the exe as well as the PID
++    const a = (fp.getAppsArray() ?? []).find(a => !neoIsProxy(a) && (a.processID === focus.pid || focus.exe && base(a.executableFile) === focus.exe));
++    if (!a || a.executableFile === neoFgApp?.executableFile && a.iconData === neoFgApp?.iconData) return; // no audio: keep the previous app, like the proxy
++    neoFgApp = a, Ir.logger.debug(`Foreground app: ${a.displayName || a.executableFile}`), neoRedrawAllManual()
++  };
++  try {
++    const w = new Worker(path.join(__dirname, "fgworker.js"), { workerData: { koffi: require.resolve("koffi") } });
++    w.on("message", m => { m.tid ? tid = m.tid : (focus = { pid: m.pid, exe: exeOf(m.pid) }, match()) });
++    w.on("error", e => Ir.logger.warn(`Foreground icon: ${e?.message ?? e}`));
++    w.unref();
++    // The worker blocks in GetMessageW; WM_QUIT ends its loop so the plugin can exit.
++    process.on("exit", () => { tid && PostThreadMessageW(tid, 18, 0, 0) });
++    fp.onApplicationAdded(match);
++  } catch (e) { Ir.logger.warn(`Foreground icon: ${e?.message ?? e}`) }
++})();

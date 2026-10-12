@@ -1,14 +1,16 @@
 """Build "Volume Controller NEO" from your own copy of Elgato's Volume Controller plugin.
 
-Usage:  python patch.py [--source PATH] [--out DIR] [--install]
+Usage:  python patch.py [--source PATH] [--out DIR] [--volumeproxy EXE] [--install]
 
-  --source   the official plugin folder (default: the one Stream Deck installed,
-             %APPDATA%\\Elgato\\StreamDeck\\Plugins\\com.elgato.volume-controller.sdPlugin)
-  --out      where to write the patched plugin and the .streamDeckPlugin package (default: ./out)
-  --install  open the package with Stream Deck when done
+  --source       the official plugin folder (default: the one Stream Deck installed,
+                 %APPDATA%\\Elgato\\StreamDeck\\Plugins\\com.elgato.volume-controller.sdPlugin)
+  --out          where to write the patched plugin and the .streamDeckPlugin package (default: ./out)
+  --volumeproxy  VolumeProxy's Foreground.exe to bundle (default: %LOCALAPPDATA%\\VolumeProxy\\Foreground.exe
+                 if present); without it the plugin works, it just does not start the proxy itself
+  --install      open the package with Stream Deck when done
 
-Needs Python 3.9+ and Node.js (for `npx js-beautify`). Nothing from Elgato is
-redistributed: this repo only holds the changes; the plugin is built from your copy.
+Needs Python 3.9+ and Node.js (for `npx js-beautify` and `npm install koffi`). Nothing from
+Elgato is redistributed: this repo only holds the changes; the plugin is built from your copy.
 """
 import argparse
 import base64
@@ -29,7 +31,10 @@ BEAUTIFY = ["npx", "--yes", "js-beautify@1.15.1", "-s", "2"]
 PATCHES = {
     "bin/plugin.js": "plugin.js.patch",
     "pi/application/auto-detection/inspector.js": "auto-detection-inspector.js.patch",
+    "pi/application/manual-detection/inspector.html": "manual-detection-inspector.html.patch",
+    "pi/application/manual-detection/inspector.js": "manual-detection-inspector.js.patch",
 }
+KOFFI = "koffi@2.12.0"  # native calls for the focused-app hook (bin/fgworker.js)
 NEO_MODEL = "20GBJ9901"
 
 
@@ -123,6 +128,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--source", default=default_source())
     ap.add_argument("--out", default=os.path.join(HERE, "out"))
+    ap.add_argument("--volumeproxy", default=os.path.join(os.environ.get("LOCALAPPDATA", ""), "VolumeProxy", "Foreground.exe"))
     ap.add_argument("--install", action="store_true")
     args = ap.parse_args()
 
@@ -147,7 +153,8 @@ def main():
                             shell=(os.name == "nt"))
     if pretty.returncode != 0 or not pretty.stdout:
         fail("js-beautify failed (is Node.js installed?)\n" + pretty.stderr)
-    open(js, "w", encoding="utf-8", newline="\n").write(pretty.stdout)
+    # end with a newline, so patches can append to the end of the file
+    open(js, "w", encoding="utf-8", newline="\n").write(pretty.stdout.rstrip("\n") + "\n")
 
     # 2. own plugin identity (not the Marketplace one -> no integrity check)
     for root, dirs, files in os.walk(dst):
@@ -169,11 +176,25 @@ def main():
         open(p, "w", encoding="utf-8", newline="\n").write(apply_unified_diff(text, diff, rel))
         print("patched", rel)
 
-    # 4. plain-text manifest + Neo auto profile
+    # 4. plain-text manifest, own files, Neo auto profile
     shutil.copyfile(os.path.join(HERE, "template", "manifest.json"), os.path.join(dst, "manifest.json"))
+    shutil.copytree(os.path.join(HERE, "template", "bin"), os.path.join(dst, "bin"), dirs_exist_ok=True)
     make_neo_profile(dst)
 
-    # 5. sanity check + package
+    # 5. koffi (focused-app hook) and, if available, VolumeProxy
+    npm = subprocess.run(["npm", "install", "--prefix", os.path.join(dst, "bin"), "--no-save",
+                          "--no-package-lock", "--no-audit", "--no-fund", KOFFI],
+                         capture_output=True, text=True, shell=(os.name == "nt"))
+    if npm.returncode != 0 or not os.path.isdir(os.path.join(dst, "bin", "node_modules", "koffi")):
+        fail(f"npm install {KOFFI} failed\n" + npm.stderr)
+    print("installed", KOFFI)
+    if os.path.isfile(args.volumeproxy):
+        shutil.copyfile(args.volumeproxy, os.path.join(dst, "bin", "Foreground.exe"))
+        print("bundled", args.volumeproxy)
+    else:
+        print("note: VolumeProxy not bundled (pass --volumeproxy); Foreground keys need it running")
+
+    # 6. sanity check + package
     node = shutil.which("node")
     if node and subprocess.run([node, "--check", js]).returncode != 0:
         fail("patched plugin.js does not parse")
