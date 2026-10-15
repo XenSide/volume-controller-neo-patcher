@@ -444,9 +444,9 @@
              t.showAlert()
          }
 -        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), 200)
-+        // xenside: first repeat only after 500 ms, like a keyboard: a tap whose key-up arrives late
-+        // (phone decks over Wi-Fi) must stay one step.
-+        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), e.neoHeld ? 200 : (e.neoHeld = !0, 500))
++        // xenside: first repeat only after 800 ms, like a keyboard: on a phone deck Stream Deck delivers the
++        // key-up 300-600 ms late (it renders the new key images first), and a tap must stay one step.
++        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), e.neoHeld ? 200 : (e.neoHeld = !0, 800))
        } else t.showAlert()
      }
    }, t
