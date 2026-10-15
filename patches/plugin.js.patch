@@ -1,6 +1,6 @@
 --- a/bin/plugin.js
 +++ b/bin/plugin.js
-@@ -8295,8 +8295,210 @@
+@@ -8295,8 +8295,217 @@
      o = Math.abs((t ?? 0) - 1),
      s = 244 * o,
      a = n ? "#FFF" : "#222222";
@@ -186,7 +186,14 @@
 +  }
 +  const img = c ? neoPair(t, i, { ...c, s: r?.settings }) : neoGauge(t, i, { step: n, s: r?.settings });
 +  if (neoLastImage.get(e) === img) return;
-+  neoLastImage.set(e, img), o?.setTitle(""), o?.setImage(img)
++  neoLastImage.set(e, img);
++  // Sent as a small PNG: Stream Deck rasterizing the SVG (with its embedded icon) held back the next key-up.
++  neoPng(img).then(png => { neoLastImage.get(e) === img && (o?.setTitle(""), o?.setImage(png)) },
++    () => { o?.setTitle(""), o?.setImage(img) })
++}
++async function neoPng(svg) {
++  const b = await Zu(Buffer.from(svg.slice(svg.indexOf(",") + 1), "base64")).resize(144, 144).png({ compressionLevel: 1 }).toBuffer();
++  return "data:image/png;base64," + b.toString("base64")
 +}
 +// Pairing depends on which keys exist, so redraw every manual key when one appears, disappears or changes.
 +function neoRedrawAllManual() {
@@ -212,7 +219,7 @@
  class cp {
    activity;
    displayName;
-@@ -8909,6 +9111,9 @@
+@@ -8909,6 +9118,9 @@
          case In.Galleon100SD:
            Ir.profiles.switchToProfile(n, "Volume Controller Galleon (Auto)");
            break;
@@ -222,7 +229,7 @@
          default:
            Ir.actions.find(e => e.id === t)?.showAlert()
        }
-@@ -8919,17 +9124,22 @@
+@@ -8919,17 +9131,22 @@
  ! function(e) {
    e.Keypad = "Keypad", e.Encoder = "Encoder"
  }(Ap || (Ap = {}));
@@ -247,7 +254,7 @@
      const {
        controller: n,
        context: r,
-@@ -8945,15 +9155,15 @@
+@@ -8945,15 +9162,15 @@
          } = o;
          if (e === Rr.adjust) {
            const e = parseInt(n ?? "");
@@ -266,7 +273,7 @@
    },
    wp = (e, t, i = !0) => {
      if (!e) return;
-@@ -9116,7 +9326,7 @@
+@@ -9116,7 +9333,7 @@
    },
    Rp = (e, t, i) => {
      if (!e) return;
@@ -275,7 +282,7 @@
      Ir.actions.find(t => t.id === e)?.setImage(n)
    };
  let kp = (() => {
-@@ -9157,7 +9367,7 @@
+@@ -9157,7 +9374,7 @@
            coordinates: o
          } = i, {
            column: s
@@ -284,7 +291,7 @@
          if (!a || void 0 === a.autoColumns || void 0 === a.startColumnOffset) return;
          const l = a.getAutoColumn(s, Ap.Keypad),
            c = a.getAppIndexFromColumn(s, Ap.Keypad);
-@@ -9179,7 +9389,7 @@
+@@ -9179,7 +9396,7 @@
            coordinates: r
          } = t, {
            column: o
@@ -293,7 +300,7 @@
          if (void 0 === s) return i.showAlert(), void Ir.logger.error("Unexpected error: Stream Deck device not registered in plugin.");
          const a = gp.globalSettingsCache,
            l = a && "active" == a[n]?.showApps,
-@@ -9455,7 +9665,7 @@
+@@ -9455,7 +9672,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -302,7 +309,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad);
-@@ -9480,7 +9690,7 @@
+@@ -9480,7 +9697,7 @@
            coordinates: r
          } = i, {
            column: o
@@ -311,7 +318,7 @@
            id: s
          } = t;
          this.keyDownMap.set(s, !0), this.decrementVolume(s, n, o)
-@@ -9553,7 +9763,7 @@
+@@ -9553,7 +9770,7 @@
            coordinates: s
          } = t, {
            column: a
@@ -320,7 +327,7 @@
          if (!l || void 0 === l.autoColumns || void 0 === l.startColumnOffset) return;
          const c = l.getAutoColumn(a, Ap.Keypad),
            h = l.getAppIndexFromColumn(a, Ap.Keypad),
-@@ -9575,7 +9785,7 @@
+@@ -9575,7 +9792,7 @@
            coordinates: n
          } = i, {
            column: r
@@ -329,7 +336,7 @@
            id: o,
            device: s
          } = t, {
-@@ -9642,7 +9852,7 @@
+@@ -9642,7 +9859,7 @@
          } = e, {
            id: i
          } = t.device, n = gp.deckDevices.get(i);
@@ -338,7 +345,7 @@
            e.autoColumns.forEach(e => {
              if (e.muteKey && Ir.actions.find(t => t.id === e.muteKey)?.setImage(), e.volumeUpKey && Ir.actions.find(t => t.id === e.volumeUpKey)?.setImage(), e.volumeDownKey && Ir.actions.find(t => t.id === e.volumeDownKey)?.setImage(), e.volumeDial) {
                const t = Ir.actions.find(t => t.id === e.volumeDial);
-@@ -9666,7 +9876,10 @@
+@@ -9666,7 +9883,10 @@
          } = e, {
            id: i
          } = t.device;
@@ -350,7 +357,7 @@
        }
        onWillDisappear(e) {
          const {
-@@ -10108,6 +10321,8 @@
+@@ -10108,6 +10328,8 @@
          return 3;
        case In.StreamDeckPlusXL:
          return 6;
@@ -359,7 +366,7 @@
        default:
          return 0
      }
-@@ -10128,16 +10343,17 @@
+@@ -10128,16 +10350,17 @@
        Sp(e.executableFile).filter(({
          settings: e,
          controller: t
@@ -380,7 +387,7 @@
          }
        })
      })(e, t)
-@@ -10147,7 +10363,7 @@
+@@ -10147,7 +10370,7 @@
        t.filter(({
          settings: e,
          controller: t
@@ -389,7 +396,7 @@
          context: t,
          controller: n,
          settings: r
-@@ -10157,10 +10373,7 @@
+@@ -10157,10 +10380,7 @@
              Ip(t, e, i);
              break;
            case Ap.Keypad:
@@ -401,7 +408,7 @@
          }
        })
      })(e, Sp(e.executableFile), t)
-@@ -10187,7 +10400,7 @@
+@@ -10187,7 +10407,7 @@
      return void 0 === n ? void 0 : this.currentOffset + n
    }
    nextPage(e) {
@@ -410,7 +417,7 @@
    }
    previousPage(e) {
      this.currentOffset > 0 && (this.currentOffset = this.previousOffset, xp(e, this))
-@@ -10265,7 +10478,8 @@
+@@ -10265,7 +10485,8 @@
          h = c?.executableFile;
        if (!h) return Ir.logger.error("Unable to identify application executable file."), void t.showAlert();
        const d = fp.getAppByExecutableFile(h);
@@ -420,7 +427,7 @@
      }
      onWillDisappear(e) {
        const {
-@@ -10273,7 +10487,7 @@
+@@ -10273,7 +10494,7 @@
        } = e, {
          id: i
        } = t;
@@ -429,7 +436,7 @@
      }
      onDialRotate(e) {
        if (!fp.isConnected) return e.action.showAlert(), void Ir.logger.error("Audio Router is not running!");
-@@ -10371,7 +10585,8 @@
+@@ -10371,7 +10592,8 @@
          coordinates: s,
          settings: o,
          controller: l
@@ -439,18 +446,18 @@
      }
      onKeyDown(e) {
        const {
-@@ -10417,7 +10632,9 @@
+@@ -10417,7 +10639,9 @@
            default:
              t.showAlert()
          }
 -        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), 200)
-+        // xenside: first repeat only after 800 ms, like a keyboard: on a phone deck Stream Deck delivers the
-+        // key-up 300-600 ms late (it renders the new key images first), and a tap must stay one step.
-+        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), e.neoHeld ? 200 : (e.neoHeld = !0, 800))
++        // xenside: first repeat only after 400 ms, like a keyboard: a tap whose key-up arrives a little late (phone
++        // deck over Wi-Fi) must stay one step.
++        this.keyDownContexts.has(n) && setTimeout(() => this.changeVolume(e), e.neoHeld ? 200 : (e.neoHeld = !0, 400))
        } else t.showAlert()
      }
    }, t
-@@ -10499,10 +10716,15 @@
+@@ -10499,10 +10723,15 @@
      t.updateAppMute(e)
    })
  }
@@ -467,7 +474,7 @@
      connected: fp.isConnected,
      globalSettings: t
    })
-@@ -10551,7 +10773,7 @@
+@@ -10551,7 +10780,7 @@
      case _r.manual:
        const e = (fp.getAppsArray() ?? []).map(e => e.toJson());
        Ir.ui.sendToPropertyInspector({
@@ -476,7 +483,7 @@
          connected: fp.isConnected
        });
        break;
-@@ -10584,3 +10806,56 @@
+@@ -10584,3 +10813,56 @@
      void 0 !== e?.type && gp.deckDevices.set(e.id, new of(e.id, e.type))
    }), Ir.settings.getGlobalSettings()
  });
