@@ -1,3 +1,5 @@
+![Volume Controller NEO patcher](docs/cover.png)
+
 # Volume Controller NEO (patcher)
 
 Builds **Volume Controller NEO** — Elgato's Volume Controller Stream Deck plugin
